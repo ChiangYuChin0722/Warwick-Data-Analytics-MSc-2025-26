@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS918 NLP，考試核心 textbook</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  --bg: #faf8f3;
+  --panel: #ffffff;
+  --panel2: #f3efe6;
+  --text: #2c2a26;
+  --muted: #6b6862;
+  --accent: #5b7a8c;
+  --accent2: #b8865b;
+  --danger: #b85450;
+  --hot: #c87850;
+  --warn: #c9a455;
+  --border: #e0dcd2;
+  --link: #5b7a8c;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 16px;
+}
+.topbar {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.topbar h1 { margin: 0; font-size: 18px; color: var(--accent); }
+.topbar nav a {
+  color: var(--text); text-decoration: none; margin: 0 8px;
+  padding: 6px 10px; border-radius: 6px; font-size: 14px;
+}
+.topbar nav a:hover { background: var(--panel2); color: var(--accent); }
+.container { max-width: 1100px; margin: 0 auto; padding: 30px 22px; }
+h2 {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 8px;
+  margin-top: 40px;
+  font-size: 26px;
+}
+h3 { color: var(--accent2); margin-top: 30px; font-size: 20px; }
+h4 { color: #6d4d8c; margin-top: 22px; font-size: 17px; }
+.en { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+.intro {
+  background: var(--panel);
+  padding: 22px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.priority-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: var(--panel);
+}
+.priority-table th, .priority-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  vertical-align: top;
+}
+.priority-table th { background: var(--panel2); color: var(--accent); }
+.priority-table tr:nth-child(even) { background: rgba(0,0,0,0.015); }
+.priority-table .empty { color: var(--muted); text-align: center; opacity: 0.45; }
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.tag-hot { background: var(--hot); color: #fff; }
+.tag-warn { background: var(--warn); color: #2c2a26; }
+.tag-2020 { background: #c9c9c9; color: #2c2a26; }
+.tag-2021 { background: #b8a4c9; color: #2c2a26; }
+.tag-2022 { background: #a4b8c9; color: #2c2a26; }
+.tag-2023 { background: #a4c9b8; color: #2c2a26; }
+.tag-2024 { background: #c9b8a4; color: #2c2a26; }
+.tag-2025 { background: #c9a4b8; color: #2c2a26; }
+details.topic {
+  background: var(--panel);
+  padding: 0;
+  border-radius: 12px;
+  margin: 14px 0;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+details.topic > summary {
+  cursor: pointer;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  background: transparent;
+  user-select: none;
+}
+details.topic > summary::-webkit-details-marker { display: none; }
+details.topic > summary::before {
+  content: "▸";
+  color: var(--accent);
+  font-size: 14px;
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+details.topic[open] > summary::before { transform: rotate(90deg); }
+details.topic > summary > .topic-title {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--accent);
+  flex: 1;
+}
+details.topic > summary:hover { background: rgba(91, 122, 140, 0.04); }
+details.topic > summary > .topic-meta { font-size: 13px; color: var(--muted); }
+details.topic > .topic-body {
+  padding: 0 26px 22px 26px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 0;
+}
+details.exam-q {
+  background: var(--panel);
+  padding: 0;
+  border-radius: 10px;
+  margin: 14px 0;
+  border-left: 4px solid var(--accent2);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+details.exam-q > summary {
+  cursor: pointer;
+  padding: 14px 20px;
+  color: var(--accent2);
+  font-weight: 600;
+  font-size: 16px;
+  list-style: none;
+  user-select: none;
+}
+details.exam-q > summary::-webkit-details-marker { display: none; }
+details.exam-q > summary::before {
+  content: "▸";
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+details.exam-q[open] > summary::before { transform: rotate(90deg); }
+details.exam-q[open] > summary { border-bottom: 1px solid var(--border); }
+details.exam-q > summary:hover { background: rgba(184, 134, 91, 0.05); }
+details.exam-q > .exam-body { padding: 14px 20px 18px 20px; }
+details.answer {
+  background: rgba(91, 122, 140, 0.06);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 1px solid rgba(91, 122, 140, 0.2);
+}
+details.answer summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+}
+code {
+  background: var(--panel2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  color: #5d3a1c;
+}
+pre {
+  background: var(--panel2);
+  color: var(--text);
+  padding: 14px;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  font-size: 13px;
+}
+.formula {
+  background: rgba(184, 134, 91, 0.08);
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent2);
+  margin: 10px 0;
+  border-radius: 4px;
+}
+.tip {
+  background: rgba(91, 122, 140, 0.08);
+  padding: 12px 16px;
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  margin: 14px 0;
+}
+.tip strong { color: var(--accent); }
+.warning {
+  background: rgba(184, 84, 80, 0.08);
+  padding: 12px 16px;
+  border-left: 3px solid var(--danger);
+  border-radius: 4px;
+  margin: 14px 0;
+}
+.warning strong { color: var(--danger); }
+.intuition {
+  background: rgba(200, 120, 80, 0.08);
+  padding: 12px 16px;
+  border-left: 3px solid var(--hot);
+  border-radius: 4px;
+  margin: 12px 0;
+  font-size: 15px;
+}
+.intuition::before { content: "💡 直覺："; font-weight: 600; color: var(--hot); }
+details.hot-topic {
+  background: linear-gradient(90deg, rgba(200, 120, 80, 0.12), transparent);
+  padding: 0;
+  border-left: 5px solid var(--hot);
+  margin: 12px 0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+details.hot-topic > summary {
+  cursor: pointer;
+  padding: 12px 18px;
+  color: var(--hot);
+  font-weight: 600;
+  font-size: 17px;
+  list-style: none;
+  user-select: none;
+}
+details.hot-topic > summary::-webkit-details-marker { display: none; }
+details.hot-topic > summary::before {
+  content: "▸";
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+details.hot-topic[open] > summary::before { transform: rotate(90deg); }
+details.hot-topic > .hot-body { padding: 12px 18px 16px 18px; }
+table { border-collapse: collapse; margin: 12px 0; }
+th, td { padding: 8px 12px; border: 1px solid var(--border); }
+th { background: var(--panel2); }
+.year-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 4px; }
+.y20 { background: #d0d0d0; color: #2c2a26; }
+.y21 { background: #e0d3ec; color: #4a2d6a; }
+.y22 { background: #d3e0ec; color: #2d4a6a; }
+.y23 { background: #d3ecde; color: #2d6a4a; }
+.y24 { background: #ecd9c5; color: #6a4a2d; }
+.y25 { background: #ecc5d4; color: #6a2d4a; }
+.t-quote { background: rgba(190, 90, 58, 0.08); border-left: 4px solid #be5a3a; padding: 12px 16px; margin: 14px 0; border-radius: 6px; font-style: italic; }
+.t-quote::before { content: "🎤 老師原話："; font-style: normal; font-weight: 600; color: #be5a3a; }
+.memo { color: var(--accent2); font-weight: 600; }
+
+/* === Flip flashcards (cream/warm palette) === */
+.flip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin: 14px 0; }
+.flip-card { position: relative; height: 180px; cursor: pointer; perspective: 1200px; user-select: none; }
+.flip-card-inner { position: absolute; inset: 0; transition: transform 0.55s; transform-style: preserve-3d; }
+.flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-face { position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; border: 1px solid var(--border); border-radius: 10px; padding: 14px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 1px 4px rgba(31,35,40,0.06); background: var(--panel); }
+.flip-front { background: linear-gradient(135deg, var(--panel2) 0%, var(--panel) 60%); justify-content: center; align-items: center; text-align: center; }
+.flip-front .term { color: var(--accent); font-size: 17px; font-weight: bold; line-height: 1.3; }
+.flip-front .clickhint { position: absolute; bottom: 8px; right: 10px; font-size: 10px; color: var(--muted); font-style: italic; opacity: 0.6; }
+.flip-front .corner { position: absolute; top: 8px; left: 10px; font-size: 11px; color: var(--accent2); font-weight: 600; opacity: 0.7; }
+.flip-back { color: var(--text); transform: rotateY(180deg); font-size: 12.5px; line-height: 1.5; text-align: left; justify-content: flex-start; overflow-y: auto; }
+.flip-back .kw { color: var(--danger); font-weight: bold; }
+.flip-back .formula-inline { display: inline-block; background: rgba(184, 134, 91, 0.08); padding: 1px 6px; border-radius: 3px; font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 11px; color: var(--accent2); margin: 3px 0; border: 1px solid var(--border); }
+.flip-back .hook { display: block; color: var(--muted); font-size: 11.5px; font-style: italic; margin-top: 6px; padding-top: 5px; border-top: 1px dashed var(--border); }
+.flip-card-group { margin: 24px 0 6px; padding: 8px 14px; background: var(--accent); color: #fff; border-radius: 6px; font-size: 14px; font-weight: bold; }
+.flip-controls { display: flex; gap: 8px; margin: 10px 0; }
+.flip-btn { padding: 6px 14px; border: 1px solid var(--accent); background: var(--panel); color: var(--accent); border-radius: 99px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; }
+.flip-btn:hover { background: var(--accent); color: #fff; }
+footer { text-align: center; padding: 30px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 40px; }
+ul, ol { padding-left: 22px; } li { margin: 4px 0; }
+@media (max-width: 700px) {
+  .topbar nav { display: none; }
+  .container { padding: 18px 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>CS918 NLP，考試核心 textbook</h1>
+  <nav>
+    <a href="#teacher">老師講的</a>
+    <a href="#trend">考點分析</a>
+    <a href="#cards">🎴 單字卡</a>
+    <a href="#q1">Q1</a>
+    <a href="#q2">Q2</a>
+    <a href="#q3">Q3</a>
+    <a href="#q4">Q4</a>
+    <a href="#cheat">公式表</a>
+  </nav>
+</div>
+
+<div class="container">
+
+<div class="intro">
+  <h2 style="margin-top:0; border:none;">📘 這份筆記只放「老師說會考」+「往年考過」的內容</h2>
+  <p>來源：</p>
+  <ul>
+    <li>📢 Revision lecture 逐字稿（老師親口指出會考的）</li>
+    <li>📜 Summer 2020 / 2021 / 2022 / 2023 / 2024 / 2025 六份考古題</li>
+  </ul>
+  <p><strong>策略：</strong>2 小時 × 6 題挑 4 題 ≈ 30 min/題。Q1–Q4 主題穩定到「幾乎可預測」 — 練熟這四題搶 100 分，Q5/Q6 當保底。</p>
+  <p><strong>說明：</strong>
+    <span class="tag tag-hot">🔥 必考</span> 5/6 年考過
+    <span class="tag tag-warn">⚠️ 高機率</span> 3-4 年考過
+    <span class="year-tag y20">'20</span>
+    <span class="year-tag y21">'21</span>
+    <span class="year-tag y22">'22</span>
+    <span class="year-tag y23">'23</span>
+    <span class="year-tag y24">'24</span>
+    <span class="year-tag y25">'25</span>
+    出現的年份
+  </p>
+  <p><span class="memo">中英文使用原則：</span>要默寫到考卷上的（公式、定義、答題模板）保留<span class="memo">英文</span>，理解說明用中文。</p>
+</div>
+
+<!-- =========================================================
+     SECTION 1: TEACHER'S REVISION HINTS
+     ========================================================= -->
+
+<h2 id="teacher">📢 老師親口講過的重點</h2>
+
+<div class="warning">
+<strong>這一段最重要：</strong>下面整理自 revision lecture 錄音逐字稿，<strong>不是我猜的</strong>。標 🎤 是老師親口說的話。優先級最高。
+</div>
+
+<h3>🧠 考試本身（老師直接講的）</h3>
+<ul>
+  <li><strong>2 小時 × 6 題 × 25 分 × 選 4 題</strong>（25 × 4 = 100 滿分）。</li>
+  <li><strong>如果寫超過 4 題，只看前 4 題</strong>，除非明確標示要批改哪 4 題。</li>
+  <li><strong>計算機：</strong> CASIO FX-82 / FX-83 / FX-85 系列。</li>
+  <li><strong>Penn Treebank tagset 和 grammar rules 通常在 Appendix 提供</strong> — 不需要硬背 tag。</li>
+</ul>
+
+<h3>🔥 三大答題鐵則（老師原話 → 拿 first class 70+ 的關鍵）</h3>
+
+<details class="hot-topic" open>
+<summary>1. 公式 + LHS（左邊一定要寫）</summary>
+<div class="hot-body">
+<p class="t-quote">"If you only write the formula floating without the LHS, the math is not formally coherent — you cannot get full marks."</p>
+<p>寫公式時務必加上左邊，例如：</p>
+<ul>
+<li>✅ <code>sim(w₁, w₂) = (w₁·w₂) / (‖w₁‖·‖w₂‖)</code></li>
+<li>✅ <code>P(w_k | w_{k-1}) = count(w_{k-1}, w_k) / count(w_{k-1})</code></li>
+<li>❌ 只寫右邊一坨 — 不算 formally coherent，拿不到滿分。</li>
+</ul>
+</div>
+</details>
+
+<details class="hot-topic">
+<summary>2. 用 formal terminology（這幾個詞會被閱卷者圈起來）</summary>
+<div class="hot-body">
+<p>看到題目就有反射：</p>
+<ul>
+<li><b>distributional hypothesis</b>（不要寫 "words have similar meanings"）</li>
+<li><b>continuation probability</b>（不要寫 "how often a word appears"）</li>
+<li><b>Markov assumption</b>（不要寫 "only depends on previous"）</li>
+<li><b>conditional independence</b>（不要寫 "naive"）</li>
+<li><b>generative</b> / <b>discriminative</b>（必須明確說哪一派）</li>
+<li><b>maximum likelihood</b>（不要寫 "count and divide"）</li>
+<li><b>cross-entropy</b>（不要只寫 "log loss"）</li>
+</ul>
+<p>這些字寫出來就是 70+，不寫就是 60。</p>
+</div>
+</details>
+
+<details class="hot-topic">
+<summary>3. 每個定義都附 example</summary>
+<div class="hot-body">
+<p>背熟這些經典範例：</p>
+<table>
+<tr><th>概念</th><th>必背範例</th></tr>
+<tr><td>Antonymy</td><td><i>hot / cold</i>, <i>buy / sell</i></td></tr>
+<tr><td>Synonymy</td><td><i>couch / sofa</i></td></tr>
+<tr><td>Polysemy</td><td><i>bank</i> = 銀行公司 vs 那棟建築（同詞源）</td></tr>
+<tr><td>Homonymy</td><td><i>bank</i> = 河岸 vs 金融機構（不同詞源）</td></tr>
+<tr><td>Hyponymy</td><td><i>poodle ⊂ dog</i></td></tr>
+<tr><td>Meronymy</td><td><i>wheel ⊂ car</i></td></tr>
+<tr><td>Lemmatisation</td><td><i>are → be</i>, <i>better → good</i></td></tr>
+<tr><td>Stemming (Porter)</td><td><i>computational → comput</i>, <i>flies → fli</i></td></tr>
+<tr><td>Kneser-Ney 直覺</td><td><i>Francisco</i> 只跟 San → P_cont 低</td></tr>
+<tr><td>PP attachment ambiguity</td><td><i>I shot an elephant in my pajamas</i></td></tr>
+</table>
+</div>
+</details>
+
+<h3>📖 動詞辨識 — 看到這個動詞就知道該寫多少</h3>
+
+<table class="priority-table">
+<tr><th>動詞</th><th>該怎麼寫</th><th>陷阱</th></tr>
+<tr><td><strong>Define / What is</strong></td><td>定義 + 公式 + 1 句範例</td><td>不要寫成比較</td></tr>
+<tr><td><strong>Describe</strong></td><td>定義 + 機制 + 為什麼這樣設計（3–6 行）</td><td>不要只寫一句</td></tr>
+<tr><td><strong>Explain</strong></td><td>定義 + 推理 + 跟其他概念的連結</td><td>光列名稱不夠</td></tr>
+<tr><td><strong>Compare / Difference</strong></td><td>各 2 行定義 + 5 行比較</td><td>10 行定義 0 行比較 = 卡在 60</td></tr>
+<tr><td><strong>List</strong></td><td>項目 + 每項一句 why</td><td>裸列表只給 60</td></tr>
+<tr><td><strong>Propose</strong></td><td>自己做出 coherent 的選擇並說明</td><td>列 5 個選項而不下決定，失分</td></tr>
+<tr><td><strong>Calculate / Apply</strong></td><td>公式 → 代入 → 中間值 → 最終答案</td><td>跳步驟一錯全錯</td></tr>
+<tr><td><strong>Intuition</strong></td><td>只寫直覺，不寫公式或正式定義</td><td>寫公式 = 沒讀題</td></tr>
+</table>
+
+<!-- =========================================================
+     SECTION 2: TREND ANALYSIS
+     ========================================================= -->
+
+<h2 id="trend">🎯 六年題型分析（2020–2025）</h2>
+
+<div class="tip">
+<strong>規律總結：</strong>Q1–Q4 主題穩定到「幾乎可預測」。Q1 = Foundations、Q2 = Language Modelling、Q3 = Embeddings + Classification、Q4 = Sequence + Parsing。
+</div>
+
+<table class="priority-table">
+<tr><th>年</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th></tr>
+<tr><td>'20</td><td>Regex + Lemma/Stem + Homonymy/Polysemy + Similarity 演算法</td><td>N-gram + Laplace + Add-k + Perplexity</td><td>Embeddings + One-hot + Macro/Micro F1 + PCFG parse tree</td><td>HMM vs MEMM + Label bias + CRF + Trigram HMM</td></tr>
+<tr><td>'21</td><td>Regex + Lemma/Stem + |V| + Lesk + Sentence segmentation</td><td>Smoothing + Interpolated KN + MLE + Add-k + 整句機率</td><td>Macro/Micro F1 + 多 parse tree + 兩類 embedding</td><td>HMM bigram + Viterbi + Ice-cream HMM + AP/NDCG/MAP</td></tr>
+<tr><td>'22</td><td>Regex + 三 preprocessing + Lemma vs Stem</td><td>N-gram + Intrinsic/Extrinsic + Interpolated KN + Trigram + Add-1 整句</td><td>One-hot + Overfitting + Macro/Micro + Imbalanced + Cosine + CBOW/Skip-gram/Word2Vec + Generative/Discriminative</td><td>POS sequential + Label bias + Penn Treebank 糾錯 + Parse tree + CFG</td></tr>
+<tr><td>'23</td><td>Regex + Preprocessing pipeline + Thesaurus/Distributional + Antonymy/Synonymy/Hyponymy</td><td>LM 應用 + 長 n-gram + Log + Laplace + KN continuation</td><td>One-hot + Evaluation + SGNS + Static/Contextualised + PMI 矩陣 + Doc-Term matrix</td><td>HMM/MEMM/CRF + Markov chain + Transition/Emission + HMM for POS + Constituency/Dependency + CFG parse tree</td></tr>
+<tr><td>'24</td><td>Regex + 中文 tokenisation + Max Match + Homonymy/Polysemy</td><td>N-gram + Perplexity + Good-Turing + 計算</td><td>Macro/Micro F1 + 應用 + Negative sampling + Bias + GloVe/Word2Vec + Cosine 計算</td><td>CFG components + CFG/PCFG/Lexicalised + Parsing ambiguity + Lexicalisation + Dependency + CFG parse tree</td></tr>
+<tr><td>'25</td><td>Regex + |V| + Lemma vs Stem (Porter) + Sentence segmentation</td><td>Smoothing + Interpolated KN + MLE + Add-k + 整句機率 + Lesk</td><td>Embeddings + One-hot + Contextual/Static + BERT MLM + TF-IDF 計算</td><td>HMM + Viterbi + Lexicalised parsing + Bottom-up (CKY) + Penn Treebank + CFG parse tree</td></tr>
+</table>
+
+<h3>🔥 最熱門考點（出現年份）</h3>
+
+<table class="priority-table">
+<tr><th>考點</th><th>標籤</th><th>出現年份</th></tr>
+<tr><td>Regex（4–6 小題）</td><td><span class="tag tag-hot">🔥 必考</span></td><td>'20 '21 '22 '23 '24 '25（每年）</td></tr>
+<tr><td>Lemma vs Stem（套整句 + Porter）</td><td><span class="tag tag-hot">🔥 必考</span></td><td>'20 '21 '22 '24 '25</td></tr>
+<tr><td>Smoothing（必背 Interpolated KN）</td><td><span class="tag tag-hot">🔥 必考</span></td><td>'20 '21 '22 '23 '24 '25</td></tr>
+<tr><td>Macro / Micro F1（從 confusion matrix 算）</td><td><span class="tag tag-hot">🔥 必考</span></td><td>'20 '21 '22 '23 '24</td></tr>
+<tr><td>HMM vs MEMM + Label Bias + CRF</td><td><span class="tag tag-hot">🔥 必考</span></td><td>'20 '22 '23（深度）+'21 '24 '25（淺度）</td></tr>
+<tr><td>CFG parse tree（每年最後子題）</td><td><span class="tag tag-hot">🔥 必考</span></td><td>'20 '22 '23 '24 '25</td></tr>
+<tr><td>Cosine / TF-IDF / PMI 數值計算</td><td><span class="tag tag-warn">⚠️ 升溫</span></td><td>'22 '23 '24 '25</td></tr>
+<tr><td>Word2Vec / CBOW / Skip-gram / Negative Sampling</td><td><span class="tag tag-warn">⚠️ 升溫</span></td><td>'22 '23 '24</td></tr>
+<tr><td>BERT MLM / Static vs Contextualised</td><td><span class="tag tag-warn">⚠️ 升溫</span></td><td>'23 '25</td></tr>
+<tr><td>Word senses（Polysemy vs Homonymy）</td><td><span class="tag tag-warn">⚠️ 高頻</span></td><td>'20 '23 '24</td></tr>
+<tr><td>Sentence segmentation</td><td><span class="tag tag-warn">⚠️ 連兩年</span></td><td>'21 '25</td></tr>
+<tr><td>Lesk algorithm</td><td><span class="tag tag-warn">⚠️ 連兩年</span></td><td>'21 '25</td></tr>
+<tr><td>|V| 計算</td><td><span class="tag tag-warn">⚠️ 連兩年</span></td><td>'21 '25</td></tr>
+</table>
+
+<!-- =========================================================
+     SECTION 3: FLIP FLASHCARDS — 54 cards
+     ========================================================= -->
+
+<h2 id="cards">🎴 翻面單字卡 — 54 個概念</h2>
+
+<div class="tip">
+<strong>點任意卡片 → 翻面</strong>看英文滿分定義。<strong>紅字 = 必背關鍵詞</strong>。底部斜體 = 中文記憶 hook。<br>
+考試時把藍字定義整段抄上去 = 滿分。
+</div>
+
+<div class="flip-controls">
+<button class="flip-btn" onclick="document.querySelectorAll('#cards .flip-card').forEach(c=>c.classList.add('flipped'))">📖 全部翻開</button>
+<button class="flip-btn" onclick="document.querySelectorAll('#cards .flip-card').forEach(c=>c.classList.remove('flipped'))">📕 全部收起</button>
+</div>
+
+<!-- Q1 GROUP -->
+<div class="flip-card-group">🔤 Q1 Foundations · 14 cards</div>
+<div class="flip-grid">
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Regex</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">A <span class="kw">formal pattern</span> defining a <span class="kw">set of strings</span>; equivalent to a <span class="kw">finite-state automaton</span>.<span class="hook">找字遊戲的紙條</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Tokenisation</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Splitting text</span> into atomic units called <span class="kw">tokens</span> (subwords, words, sentences).<span class="hook">把香腸切成肉片</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Maximum Matching</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">A <span class="kw">greedy left-to-right</span> algorithm that emits the <span class="kw">longest dictionary word</span> at each position; for languages without spaces.<span class="hook">中文貪婪切詞</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Lemmatisation</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Reducing a word to its <span class="kw">lemma (dictionary headword)</span> via a <span class="kw">lexicon</span>; output is <span class="kw">always a real word</span>.<span class="hook">are → be, better → good</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Stemming</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Stripping <span class="kw">suffixes</span> by fixed rules to produce a <span class="kw">stem</span>; the stem <span class="kw">need not be a real word</span>.<span class="hook">computational → comput (Porter)</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Synonymy</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Two <span class="kw">distinct forms</span> sharing the <span class="kw">same meaning</span>.<span class="hook">couch / sofa</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Polysemy</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">One form with <span class="kw">multiple related senses</span> from the <span class="kw">same etymology</span>.<span class="hook">bank = 銀行公司 vs 那棟建築</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Homonymy</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">One form with <span class="kw">multiple unrelated meanings</span> from <span class="kw">different etymologies</span>.<span class="hook">bank = 河岸 vs 金融機構</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Antonymy</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Words with <span class="kw">opposite meanings</span>.<span class="hook">hot / cold, buy / sell</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Hyponymy / Hypernymy</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">An <span class="kw">IS-A relation</span>: hyponym is more specific, hypernym more general.<span class="hook">poodle ⊂ dog</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Meronymy / Holonymy</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">A <span class="kw">PART-OF relation</span>: meronym is part of a holonym.<span class="hook">wheel ⊂ car</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">WordNet</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">A lexical database of English organised into <span class="kw">synsets (sets of synonyms)</span>, linked by <span class="kw">hypernymy, meronymy, antonymy</span>.<span class="hook">字典 + 關係網</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Lesk Algorithm</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Picks the word sense whose <span class="kw">gloss (dictionary definition)</span> has the <span class="kw">most word overlap</span> with the context.<span class="hook">字典定義跟上下文重疊最多的 sense</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q1</span><span class="term">Sentence Segmentation</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Splitting text into sentences as <span class="kw">binary classification</span> on each <code>.</code>/<code>?</code>/<code>!</code>. Hard cases: <span class="kw">abbreviations, decimals, URLs</span>.<span class="hook">這個 . 是不是真句尾</span></div>
+</div></div>
+
+</div>
+
+<!-- Q2 GROUP -->
+<div class="flip-card-group">📊 Q2 Language Modelling · 12 cards</div>
+<div class="flip-grid">
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Language Model</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">A <span class="kw">probability distribution over token sequences</span>; assigns $P(w_1,...,w_n)$ to any sequence over vocabulary $V$.<span class="hook">句子的人話偵測器</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">N-gram</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">A <span class="kw">contiguous sequence of N tokens</span>; basic unit of count-based LMs (unigram, bigram, trigram).<span class="hook">N 個字一組</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Markov Assumption</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">The next token depends only on a <span class="kw">bounded k-window of preceding tokens</span>: $P(w_i|history) \approx P(w_i|w_{i-k},...,w_{i-1})$.<span class="hook">失憶症：只看前 k 個</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">MLE</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Observed relative frequency</span>; for bigrams: $P(w_k|w_{k-1}) = c(w_{k-1},w_k) / c(w_{k-1})$.<span class="hook">數數法</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Smoothing</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Redistributes probability mass</span> from observed n-grams to <span class="kw">unobserved ones</span>, preventing zero probabilities.<span class="hook">給沒看過的也分一點機率</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Add-1 (Laplace)</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Add <span class="kw">pseudo-count of 1</span> to every n-gram. <span class="kw">Over-smooths</span> when |V| is large.<span class="formula-inline">P = (c+1) / (c(·)+|V|)</span><span class="hook">每個加 1，太大方</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Add-k</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Generalisation of Add-1 with <span class="kw">tunable k ∈ (0,1]</span>.<span class="formula-inline">P = (c+k) / (c(·)+k·|V|)</span><span class="hook">Add-1 的小氣版</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Good-Turing</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Re-estimates count using <span class="kw">frequency of frequencies</span>: $r^* = (r+1) N_{r+1}/N_r$. Unseen prob ≈ $N_1/N$.<span class="hook">用 singletons 估 unseen</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Interpolated Kneser-Ney</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Absolute discount</span> + back-off to <span class="kw">continuation probability</span>. 3 parts: <span class="kw">d, λ, P_cont</span>.<span class="formula-inline">P = max(c-d,0)/c + λ·P_cont</span><span class="hook">Francisco 只跟 San → P_cont 低</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Continuation Probability</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Fraction of distinct bigram types</span> where $w$ appears as the second word.<span class="formula-inline">|{w': c(w',w)>0}| / |distinct bigrams|</span><span class="hook">字的人緣：能配多少前面字</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Perplexity</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Inverse geometric mean</span> of per-token probability. <span class="kw">Lower = better</span>.<span class="formula-inline">PP(W) = P(w₁...w_N)^(-1/N) = 2^H(W)</span><span class="hook">模型多迷茫</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q2</span><span class="term">Intrinsic vs Extrinsic</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Intrinsic</span>: property of model (perplexity). <span class="kw">Extrinsic</span>: downstream task performance (BLEU, WER).<span class="hook">內測 vs 外賽</span></div>
+</div></div>
+
+</div>
+
+<!-- Q3 GROUP -->
+<div class="flip-card-group">🎯 Q3 Embeddings + Classification · 14 cards</div>
+<div class="flip-grid">
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">One-hot Vector</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Sparse vector of length |V|</span> with a single 1. Carries <span class="kw">no semantic info</span> (all pairs orthogonal).<span class="hook">投票紙只勾一格</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Word Embedding</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Dense, low-dimensional, distributed</span> vector; semantically similar words have <span class="kw">geometrically close vectors</span>.<span class="hook">每個字的 GPS 座標</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Distributional Hypothesis</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Words in <span class="kw">similar contexts</span> have <span class="kw">similar meanings</span> (Firth, 1957).<span class="hook">物以類聚</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">CBOW</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Word2Vec variant: predicts the <span class="kw">centre word</span> from <span class="kw">averaged surrounding context</span>. Faster.<span class="hook">填空題</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Skip-gram</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Word2Vec variant: predicts each <span class="kw">context word</span> from the <span class="kw">centre word</span>. Better on rare words.<span class="hook">反向填空題</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Negative Sampling</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Replaces full softmax with <span class="kw">binary classification</span>: sample $k$ <span class="kw">negative pairs</span> from unigram dist. <span class="kw">O(k) not O(|V|)</span>.<span class="hook">1 真 + 5 假對比</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">GloVe</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Global matrix factorisation</span> on word-context <span class="kw">co-occurrence matrix</span>.<span class="formula-inline">J = Σ f(X_ij)(w_i·w_j - log X_ij)²</span><span class="hook">看完全部統計再學</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">TF-IDF</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Term frequency × inverse document frequency</span>; highlights <span class="kw">characteristic terms</span>.<span class="formula-inline">tf(t,d) · log(N/df(t))</span><span class="hook">特色詞分數</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">PMI / PPMI</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Joint vs independent</span>: $\log[P(x,y)/(P(x)P(y))]$. <span class="kw">PPMI</span> clamps negatives to 0.<span class="hook">兩字真有緣還是巧合</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Cosine Similarity</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Cosine of angle</span> between vectors; range $[-1, 1]$. Isolates <span class="kw">direction</span> from magnitude.<span class="formula-inline">sim = (w₁·w₂) / (‖w₁‖‖w₂‖)</span><span class="hook">看方向不看大小</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Precision / Recall / F1</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">P = TP/(TP+FP)</span>; <span class="kw">R = TP/(TP+FN)</span>; <span class="kw">F1 = harmonic mean</span> $= 2PR/(P+R)$. F1 penalises imbalance.<span class="hook">P 準 / R 乾淨 / F1 和諧</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Macro vs Micro F1</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Macro</span>: F1 per class then unweighted mean — <span class="kw">mitigates imbalance</span>. <span class="kw">Micro</span>: pool TP/FP/FN — large classes <span class="kw">dominate</span>.<span class="hook">人人平等 vs 多數派贏</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Overfitting</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Model fits training noise; <span class="kw">train error low, validation error high</span>. Fix: regularisation, dropout, early stopping.<span class="hook">背題目背太熟</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">Static vs Contextualised</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Static</span> (Word2Vec): one fixed vector per word; can't handle polysemy. <span class="kw">Contextualised</span> (BERT): different vector per occurrence.<span class="hook">bank 在「銀行」vs「河岸」 — BERT 不同向量</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q3</span><span class="term">BERT MLM</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Mask <span class="kw">15% of tokens</span> (<span class="kw">80% [MASK] / 10% random / 10% unchanged</span>); model predicts original. Forces <span class="kw">bidirectional context</span>.<span class="hook">超大型克漏字</span></div>
+</div></div>
+
+</div>
+
+<!-- Q4 GROUP -->
+<div class="flip-card-group">🔀 Q4 Sequence + Parsing · 14 cards</div>
+<div class="flip-grid">
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">Markov Chain</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Stochastic process $(Q, A, \pi)$ — <span class="kw">states + transition matrix + initial distribution</span>. Markov property: next depends only on current.<span class="hook">失憶跳棋</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">HMM</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">4-tuple $(Q, A, B, \pi)$: Markov chain on <span class="kw">hidden states</span> + <span class="kw">emission matrix B</span> generating observations.<span class="hook">雙層蛋糕：天氣→冰淇淋</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">Viterbi Algorithm</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Dynamic programming</span> for the <span class="kw">most probable hidden state sequence</span> in $O(N^2 T)$.<span class="formula-inline">v_t(j) = max_i [v_{t-1}(i)·a_ij] · b_j(o_t)</span><span class="hook">DP 偵探</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">MEMM</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Discriminative</span> sequence model with <span class="kw">log-linear</span> $P(t_i|t_{i-1},w_i)$ over arbitrary features. <span class="kw">Suffers from label bias</span>.<span class="hook">HMM 升級但有醜聞</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">Label Bias Problem</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">MEMM's <span class="kw">local normalisation per state</span> over-favours states with <span class="kw">fewer outgoing transitions</span>; the <span class="kw">observation is ignored</span>.<span class="hook">獨木橋上觀察值失效</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">CRF</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Global normalisation</span>: $Z(W)$ sums over <span class="kw">all label sequences</span>. Each local decision competes against entire path space. <span class="kw">Label bias eliminated</span>.<span class="hook">global 解決 label bias</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">CFG</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">4-tuple $(N, \Sigma, R, S)$: <span class="kw">non-terminals + terminals + rules + start symbol</span>. "Context-free": expansion doesn't depend on surroundings.<span class="hook">句子製造規則手冊</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">PCFG</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">CFG with <span class="kw">rule probabilities</span>; tree probability = <span class="kw">product of rule probabilities</span> used.<span class="hook">CFG + 機率</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">Lexicalised PCFG</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Each non-terminal annotated with its <span class="kw">head word</span>; resolves <span class="kw">attachment ambiguity</span> via lexical evidence.<span class="hook">"shoot+pajamas" 比 "elephant+pajamas" 常見</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">CNF</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">CFG restricted to two rule shapes: <span class="kw">$A \to BC$</span> or <span class="kw">$A \to w$</span>. <span class="kw">Required for CKY</span>. Any CFG can be converted.<span class="hook">CKY 的入場券</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">CKY Algorithm</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Bottom-up dynamic programming parser</span> for CFGs in <span class="kw">CNF</span>; time $O(|R|\cdot n^3)$.<span class="hook">由下往上拼樹</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">Constituency Parsing</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Tree with <span class="kw">phrase-level internal nodes</span> (NP, VP, PP). Algorithms: CKY, Earley.<span class="hook">短語層的樹</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">Dependency Parsing</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Labelled <span class="kw">head-dependent arcs</span> between words; each word has one head. Algorithms: arc-eager, biaffine neural.<span class="hook">字-字箭頭關係</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">POS Tagging</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back"><span class="kw">Sequence labelling task</span>: assign each word its <span class="kw">grammatical category</span> from a tagset (e.g. Penn Treebank, ~45 tags).<span class="hook">給每個字貼詞性</span></div>
+</div></div>
+
+<div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner">
+<div class="flip-card-face flip-front"><span class="corner">Q4</span><span class="term">BIO Tagging</span><span class="clickhint">點擊翻面 ↻</span></div>
+<div class="flip-card-face flip-back">Sequence-labelling scheme: <span class="kw">B</span>eginning of entity, <span class="kw">I</span>nside (continuation), <span class="kw">O</span>utside. Used for NER.<span class="hook">"Barack Obama" → B-PER I-PER</span></div>
+</div></div>
+
+</div>
+
+<!-- =========================================================
+     SECTION 4: CORE KNOWLEDGE — Q1 Foundations
+     ========================================================= -->
+
+<h2 id="q1">📐 Q1 Foundations — 核心知識</h2>
+
+<!-- TOPIC 1: Regex -->
+<details class="topic" id="t1">
+<summary><span class="topic-title">1. Regex（正則表達式）</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y21">'21</span><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">Regex 是「找字遊戲的紙條」 — 一個 <strong>formal pattern</strong>，定義一個字串集合。電腦把符合紙條規則的字挑出來。等價於 <strong>finite-state automaton</strong>。</div>
+
+<h4>必背符號表</h4>
+<table>
+<tr><th>符號</th><th>意義</th><th>關鍵用法</th></tr>
+<tr><td><code>[a-z]</code> / <code>[A-Z]</code></td><td>小寫 / 大寫字母</td><td>「only alphabetic」絕對用這個，不要用 <code>\w</code>（會混到 _ 和數字）</td></tr>
+<tr><td><code>[aeiou]</code></td><td>母音集合</td><td>枚舉</td></tr>
+<tr><td><code>\d</code></td><td>數字</td><td>= <code>[0-9]</code></td></tr>
+<tr><td><code>\s</code></td><td>空白</td><td><strong>絕對不要在紙上寫 literal 空格</strong></td></tr>
+<tr><td><code>\b</code></td><td>word boundary</td><td>確保「whole word」</td></tr>
+<tr><td><code>*</code> / <code>+</code> / <code>?</code></td><td>0+ / 1+ / 0或1</td><td>注意 <code>*</code> 跟 <code>+</code> 差別</td></tr>
+<tr><td><code>{n}</code> / <code>{n,m}</code></td><td>恰好 n / n 到 m 個</td><td>e.g. <code>\d{1,2}</code></td></tr>
+<tr><td><code>^</code> <code>$</code></td><td>行首 / 行尾</td><td>除非題目寫「starts at beginning of line」否則不要加</td></tr>
+<tr><td><code>.</code></td><td>任意字元</td><td><code>.*</code> 會吃進特殊符號，小心使用</td></tr>
+<tr><td><code>\$</code> <code>\.</code> <code>\(</code></td><td>escape</td><td>dollar、句點、括號都要 escape</td></tr>
+<tr><td><code>(a|b)</code></td><td>alternation</td><td>「或」</td></tr>
+<tr><td><code>(?=...)</code></td><td>positive lookahead</td><td><strong>「同時包含 X 和 Y（無順序）」必殺技</strong>：<code>^(?=.*X)(?=.*Y).*$</code></td></tr>
+</table>
+
+<div class="tip">
+<strong>滿分提示：</strong>regex 若有「over-match」邊緣情況（例如 <code>\$\d+(\.\d{1,2})?</code> 會匹配 $0.09），<strong>在旁邊寫一句</strong>「I am aware this may over-match X」 — 老師會接受並給滿分。
+</div>
+
+<h4>常見題型範例</h4>
+<table>
+<tr><th>要求</th><th>解</th></tr>
+<tr><td>"all lowercase alphabetic strings starting with c"</td><td><code>c[a-z]*</code></td></tr>
+<tr><td>"prices in dollars, up to 2 decimals"</td><td><code>\$\d+(\.\d{1,2})?</code></td></tr>
+<tr><td>"starts with lowercase, ends with uppercase, contains at least one digit"</td><td><code>^[a-z].*\d.*[A-Z]$</code></td></tr>
+<tr><td>"contains both 'happy' and 'family', any order"</td><td><code>^(?=.*happy)(?=.*family).*$</code></td></tr>
+<tr><td>"24-hour time HH:MM"</td><td><code>^([01]\d|2[0-3]):[0-5]\d$</code></td></tr>
+<tr><td>"arithmetic expr with + and - (at least one operator)"</td><td><code>^-?\d+([+\-]\d+)+(=-?\d+)?$</code></td></tr>
+</table>
+
+<details class="answer">
+<summary>📜 過去考題：'20 Q1(a) — 寫 regex 三題</summary>
+<div>
+<p><strong>(i) Upper case alphabetic strings ending in N</strong> → <code>^[A-Z]*N$</code>（用 <code>*</code> 不用 <code>+</code>）</p>
+<p><strong>(ii) Strings containing both "happy" and "family"</strong> → <code>^(?=.*happy)(?=.*family).*$</code></p>
+<p><strong>(iii) Starts at beginning with integer, ends at end with word</strong> → <code>^\d+.*[a-zA-Z]+$</code>（"a word" 用 <code>[a-zA-Z]+</code>，不是 <code>\w</code>）</p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 2: Tokenisation + Max Matching + Sentence Segmentation -->
+<details class="topic" id="t2">
+<summary><span class="topic-title">2. Tokenisation + Maximum Matching + Sentence Segmentation</span><span class="topic-meta"><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">把連續文字切成電腦能吃的小塊（token）。英文靠空白切；中文要靠字典（Max Matching）；切句要判斷句點是不是真句尾。</div>
+
+<h4>Tokenisation 定義</h4>
+<p class="formula"><strong>Tokenisation</strong> is the process of <strong>splitting text into atomic units called tokens</strong>, where a token may be a subword, character, word, sentence, or other granularity defined by the model's vocabulary.</p>
+
+<h4>主要挑戰（必背舉例）</h4>
+<ul>
+<li><strong>Apostrophes / contractions</strong>: <i>don't</i> → <code>do</code> + <code>n't</code>?</li>
+<li><strong>Hyphenated forms</strong>: <i>state-of-the-art</i> 一個 token 還是四個？</li>
+<li><strong>Multi-word proper names</strong>: <i>New York</i> 切開就壞了</li>
+<li><strong>Languages without spaces</strong>: 中文、日文、泰文 — 用 Maximum Matching 或 neural segmenter</li>
+<li><strong>URLs / emails / hashtags / emojis</strong>: 簡單 whitespace split 全毀</li>
+</ul>
+
+<h4>Maximum Matching（必背演算法 — '24 連兩年考）</h4>
+<div class="formula"><strong>Maximum Matching</strong> is a <strong>greedy left-to-right algorithm</strong> that, at each position, emits the <strong>longest substring matching a dictionary entry</strong>; used for languages without explicit word delimiters (e.g. Mandarin).</div>
+
+<p>步驟：</p>
+<ol>
+<li>從位置 0 開始</li>
+<li>找出從該位置開始字典中最長能 match 的字</li>
+<li>輸出該字，pointer 跳到該字之後</li>
+<li>重複到結尾；無 match 時退回單字元</li>
+</ol>
+
+<h4>Sentence Segmentation</h4>
+<div class="formula"><strong>Sentence segmentation</strong> splits running text into sentences. Treated as a <strong>binary classification problem</strong>: for each <code>.</code>/<code>?</code>/<code>!</code>, decide whether it ends a sentence.</div>
+
+<p><strong>難點：</strong>句點不一定是句尾</p>
+<ul>
+<li>abbreviations（Dr., U.S.A., Jr.）</li>
+<li>decimals（3.14）</li>
+<li>URLs（www.example.com）</li>
+<li>name initials（J.K. Rowling）</li>
+</ul>
+
+<p><strong>features：</strong>前一 token 是否為已知縮寫；後一 token 是否大寫開頭；前後有無空白；前一 token 長度。</p>
+
+<details class="answer">
+<summary>📜 過去考題：'24 Q1(d) — Maximum Matching 應用</summary>
+<div>
+<p><strong>Q：</strong>Apply Maximum Matching to <code>"Thetabledownhere"</code> assuming dict = {The, the, table, down, here, ...}</p>
+<p><strong>A：</strong></p>
+<ol>
+<li>pos 0：最長 match = <code>The</code> → 輸出，pos → 3</li>
+<li>pos 3：最長 match = <code>table</code> → 輸出，pos → 8</li>
+<li>pos 8：最長 match = <code>down</code> → 輸出，pos → 12</li>
+<li>pos 12：最長 match = <code>here</code> → 輸出</li>
+</ol>
+<p><strong>輸出：</strong> The / table / down / here</p>
+<p><strong>注意 issues：</strong>local ambiguity（貪婪可能切錯）、OOV（字典外退單字元）、case sensitivity、no right context（不 look ahead）。</p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 3: Lemma vs Stem -->
+<details class="topic" id="t3">
+<summary><span class="topic-title">3. Lemmatisation vs Stemming（Porter）</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y21">'21</span><span class="year-tag y22">'22</span><span class="year-tag y24">'24</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">兩個都是把字「還原」。<strong>Lemmatisation</strong> 嚴格用字典 — 輸出一定是真實字（<i>are → be</i>）；<strong>Stemming</strong> 用規則砍後綴 — 輸出可不是真字（<i>computational → comput</i>）。</div>
+
+<h4>滿分定義</h4>
+<div class="formula"><strong>Lemmatisation</strong> is the reduction of an inflected word to its <strong>lemma (the dictionary headword)</strong>, requiring a <strong>lexicon</strong> and morphological analysis (often POS). The output is <strong>always a real word</strong>.</div>
+
+<div class="formula"><strong>Stemming</strong> is the <strong>rule-based truncation of a word's suffixes</strong> to produce a <strong>stem</strong>, which <strong>need not be a real word</strong>. Different stemmers (Porter, Snowball, Lancaster) yield different stems.</div>
+
+<h4>差異對照（拿滿分背這張）</h4>
+<table>
+<tr><th></th><th>Lemmatisation</th><th>Stemming</th></tr>
+<tr><td>輸出</td><td>真實字典字</td><td>字串片段，可不是真字</td></tr>
+<tr><td>需要</td><td>lexicon + 形態分析 + POS</td><td>只要後綴規則</td></tr>
+<tr><td>嚴格度</td><td><strong>嚴格</strong>（一個 word+POS 對應唯一 lemma）</td><td><strong>靈活</strong>（不同 stemmer 結果不同）</td></tr>
+<tr><td><i>are</i></td><td><strong>be</strong></td><td>are（Porter 無動作）</td></tr>
+<tr><td><i>better</i></td><td><strong>good</strong>（with adj POS）</td><td>better</td></tr>
+<tr><td><i>flies</i></td><td><strong>fly</strong></td><td>fli（Porter: -IES → -I）</td></tr>
+<tr><td><i>having</i></td><td><strong>have</strong></td><td>have（Porter 1b 砍 -ING + 1c 復原 e）</td></tr>
+<tr><td><i>computational</i></td><td>computational</td><td><strong>comput</strong>（Porter）</td></tr>
+<tr><td><i>studies</i></td><td><strong>study</strong></td><td>studi</td></tr>
+</table>
+
+<div class="warning">
+<strong>常見扣分點：</strong> <i>are → be</i> 是 lemma 必須項；如果寫 "friend is happy..." 而不是 "friend be happy..."，每錯一個扣 1 分（題目通常 3–4 分）。
+</div>
+
+<h4>Porter Stemmer 五階段口訣</h4>
+<ul>
+<li><strong>Stage 1a:</strong> 處理複數 — SSES → SS, IES → I, S → ε</li>
+<li><strong>Stage 1b:</strong> 處理時態 — EED → EE, (*v*)ED → ε, (*v*)ING → ε</li>
+<li><strong>Stage 1c:</strong> Y → I（含母音時）</li>
+<li><strong>Stages 2–4:</strong> 衍生後綴 — ATIONAL → ATE, ISM → ε, ANCE → ε</li>
+<li><strong>Stage 5:</strong> 收尾 — final E 砍掉、雙寫字母</li>
+</ul>
+
+<details class="answer">
+<summary>📜 過去考題：'21 Q1(b) — Lemmatise + Stem 整句</summary>
+<div>
+<p><strong>Q：</strong>"Two planes are flying high in the sky."</p>
+<table>
+<tr><th>Word</th><th>Lemma</th><th>Porter Stem</th></tr>
+<tr><td>Two</td><td>two</td><td>two</td></tr>
+<tr><td>planes</td><td><strong>plane</strong></td><td><strong>plane</strong></td></tr>
+<tr><td>are</td><td><strong>be</strong></td><td>are</td></tr>
+<tr><td>flying</td><td><strong>fly</strong></td><td><strong>fli</strong></td></tr>
+<tr><td>high</td><td>high</td><td>high</td></tr>
+<tr><td>in</td><td>in</td><td>in</td></tr>
+<tr><td>the</td><td>the</td><td>the</td></tr>
+<tr><td>sky</td><td>sky</td><td>sky</td></tr>
+</table>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 4: Word Senses -->
+<details class="topic" id="t4">
+<summary><span class="topic-title">4. Word Senses（Synonymy / Polysemy / Homonymy / 上下位 / 部分整體）</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">五大語義關係要分得清，每個都記住一個範例。重點是 <strong>Polysemy（同源）</strong> vs <strong>Homonymy（不同源）</strong> — 老師最愛問這個。</div>
+
+<h4>必背五大關係</h4>
+<table>
+<tr><th>關係</th><th>定義</th><th>必背 example</th></tr>
+<tr><td><strong>Synonymy</strong></td><td>different forms, <strong>same meaning</strong></td><td><i>couch / sofa</i></td></tr>
+<tr><td><strong>Polysemy</strong></td><td>same form, <strong>multiple related senses</strong>, same etymology</td><td><i>bank</i> = 金融機構 vs 那棟建築（同源）</td></tr>
+<tr><td><strong>Homonymy</strong></td><td>same form, <strong>multiple unrelated meanings</strong>, different etymologies</td><td><i>bank</i> = 河岸 vs 金融機構（不同源）</td></tr>
+<tr><td><strong>Antonymy</strong></td><td><strong>opposite meanings</strong></td><td><i>hot / cold</i></td></tr>
+<tr><td><strong>Hyponymy / Hypernymy</strong></td><td><strong>IS-A relation</strong></td><td><i>poodle ⊂ dog</i></td></tr>
+<tr><td><strong>Meronymy / Holonymy</strong></td><td><strong>PART-OF relation</strong></td><td><i>wheel ⊂ car</i></td></tr>
+</table>
+
+<div class="tip">
+<strong>判斷 polysemy 還是 homonymy 的關鍵：</strong>看「etymology」（詞源）。<br>
+✅ 同詞源 → polysemy（如 <i>bank</i> 兩個金融意義都來自義大利文 banca）<br>
+✅ 不同詞源 → homonymy（如 <i>bank</i> 河岸來自古挪威文 bakki，銀行來自義大利文 banca）
+</div>
+
+<details class="answer">
+<summary>📜 過去考題：'20 Q1(c) — Polysemy vs Homonymy 差異 + 各舉一例 [6]</summary>
+<div>
+<p><strong>滿分答：</strong></p>
+<p><strong>Homonymy</strong> and <strong>polysemy</strong> both refer to a single lexical form associated with multiple meanings, but differ in <strong>etymological relatedness</strong>:</p>
+<ul>
+<li><strong>Homonymy:</strong> senses are <strong>unrelated</strong>, typically with distinct etymological origins; stored as <strong>separate dictionary entries</strong>.<br>
+<strong>Example:</strong> <i>bank</i> = riverbank (Old Norse) vs financial institution (Italian banca).</li>
+<li><strong>Polysemy:</strong> senses are <strong>related</strong>, sharing common etymological core; different senses of the <strong>same dictionary entry</strong>.<br>
+<strong>Example:</strong> <i>bank</i> = financial institution vs the physical building of that institution.</li>
+</ul>
+<p><strong>For first-class:</strong> link to homonymy as a near-cousin and to synonymy/antonymy as the lexical-ambiguity vs lexical-relation contrast.</p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 5: WordNet + Lesk -->
+<details class="topic" id="t5">
+<summary><span class="topic-title">5. WordNet + Lesk Algorithm（WSD）</span><span class="topic-meta"><span class="year-tag y21">'21</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">WordNet 是英文字典 + 朋友圈關係圖。Lesk 是「重疊比對」的偵探算法 — 哪個 sense 的字典定義跟上下文重疊最多字，就選那個。</div>
+
+<h4>WordNet 定義</h4>
+<div class="formula"><strong>WordNet</strong> is a large <strong>lexical database of English</strong> organised into <strong>synsets (sets of cognitive synonyms)</strong>, linked by semantic relations such as <strong>hypernymy, meronymy, antonymy</strong>.</div>
+
+<h4>Lesk Algorithm 定義</h4>
+<div class="formula"><strong>Lesk algorithm</strong> performs word sense disambiguation by selecting the sense whose <strong>gloss (dictionary definition)</strong> has the <strong>largest word overlap</strong> with the context (or with another word's gloss).</div>
+
+<h4>步驟（很重要 — 兩年都考）</h4>
+<ol>
+<li>找出目標 ambiguous word 的所有 senses 跟對應 glosses</li>
+<li>取出當前 context（或另一個 target word 的 gloss）的內容詞</li>
+<li>對每個 sense 計算 <strong>gloss ∩ context</strong> 的字數（去除 stopwords）</li>
+<li>選 overlap 最大的 sense</li>
+</ol>
+
+<details class="answer">
+<summary>📜 過去考題：'21 Q1(d) / '25 Q2(d) — Lesk for "preserve" vs "jam" 三個 senses [5]</summary>
+<div>
+<p><strong>"preserve" gloss</strong>: "fruit preserved by cooking with sugar"<br>
+內容詞（去 stopwords）：{fruit, preserved, cooking, sugar}</p>
+<ul>
+<li><strong>jam-1</strong>（a crowded mass that impedes）：{crowded, mass, impedes} → overlap = ∅ → <strong>0</strong></li>
+<li><strong>jam-2</strong>（improvised jazz performance）：{improvised, jazz, performance, group, musicians} → overlap = ∅ → <strong>0</strong></li>
+<li><strong>jam-3</strong>（food made by boiling fruit and sugar）：{food, boiling, fruit, sugar, thick, consistency} → overlap = {<strong>fruit, sugar</strong>} → <strong>2</strong></li>
+</ul>
+<p><strong>Lesk selects jam-3</strong>（食物 sense）— highest overlap.</p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- =========================================================
+     SECTION 4: CORE KNOWLEDGE — Q2 Language Modelling
+     ========================================================= -->
+
+<h2 id="q2">📐 Q2 Language Modelling — 核心知識</h2>
+
+<!-- TOPIC 6: LM + N-gram + Markov + MLE -->
+<details class="topic" id="t6">
+<summary><span class="topic-title">6. Language Model + N-gram + Markov + MLE</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">LM 是「<strong>句子機率打分器</strong>」。給任何 token 序列吐一個機率。<strong>N-gram</strong> 是把序列切成 N 個一組的 token 串；<strong>Markov assumption</strong> 把長依賴近似成只看前 k 個；<strong>MLE</strong> 用觀察到的相對頻率估機率。</div>
+
+<h4>LM 定義（滿分版）</h4>
+<div class="formula"><strong>Language Model (LM):</strong> a <strong>probability distribution over sequences of tokens</strong> that assigns $P(w_1, ..., w_n)$ to any token sequence drawn from a vocabulary $V$. <strong>Not merely a next-word predictor.</strong></div>
+
+<div class="t-quote">"I would love to think that no one is going to get out of this module thinking that language models started with ChatGPT. Statistical language models have been around for decades."</div>
+
+<h4>3 大 LM 應用（要會講）</h4>
+<ol>
+<li><strong>Speech recognition (ASR)</strong>：re-rank candidate transcripts by LM probability</li>
+<li><strong>Machine translation (MT)</strong>：re-rank candidate translations</li>
+<li><strong>Spell correction / autocomplete</strong>：choose corrections / next-word that maximise likelihood</li>
+</ol>
+
+<h4>N-gram 與 Markov assumption</h4>
+<table>
+<tr><th>Name</th><th>n</th><th>Markov order</th><th>例</th></tr>
+<tr><td>Unigram</td><td>1</td><td>0（無歷史）</td><td>(I), (love), (NLP)</td></tr>
+<tr><td>Bigram</td><td>2</td><td>1</td><td>(I, love), (love, NLP)</td></tr>
+<tr><td>Trigram</td><td>3</td><td>2</td><td>(I, love, NLP)</td></tr>
+</table>
+
+<div class="formula"><strong>Markov assumption (k-th order):</strong> $P(w_i \mid w_1, ..., w_{i-1}) \approx P(w_i \mid w_{i-k}, ..., w_{i-1})$ — 下一個字只看前 k 個。</div>
+
+<h4>MLE — 必背</h4>
+<div class="formula"><strong>Bigram MLE:</strong> $P_{\text{MLE}}(w_k \mid w_{k-1}) = \dfrac{\text{count}(w_{k-1}, w_k)}{\text{count}(w_{k-1})}$</div>
+
+<div class="formula"><strong>Sentence probability (bigram):</strong> $P(s) = P(w_1 \mid \langle s\rangle) \cdot \prod_{i=2}^{n} P(w_i \mid w_{i-1}) \cdot P(\langle/s\rangle \mid w_n)$</div>
+
+<h4>長 n-gram 的問題（'23 考過）</h4>
+<ol>
+<li><strong>Data sparsity:</strong> $|V|^n$ 個可能組合，絕大多數沒見過 → MLE 不可靠或為 0</li>
+<li><strong>Storage:</strong> 儲存所有 n-gram 不切實際</li>
+<li><strong>Diminishing returns:</strong> bias-variance tradeoff — 長 n-gram 噪聲大</li>
+</ol>
+
+<h4>Log 轉換為什麼用？</h4>
+<div class="formula">N-gram 機率小（$10^{-3}$–$10^{-5}$）；連乘 30 個會 underflow。<strong>解：</strong>$\log \prod_i P(w_i | w_{i-1}) = \sum_i \log P(w_i | w_{i-1})$。乘法變加法，數值穩定。</div>
+
+<details class="answer">
+<summary>📜 過去考題：'20 Q2(d-i)(d-ii) — MLE 計算</summary>
+<div>
+<p>10,000 tokens, |V| = 7,000. Counts: rainy=50, day=620, rainy day=15, rainy grass=0.</p>
+<ul>
+<li><strong>P(day):</strong> $620/10000 = \mathbf{0.062}$</li>
+<li><strong>P(day|rainy):</strong> $15/50 = \mathbf{0.3}$</li>
+<li><strong>P(grass|rainy) MLE:</strong> $0/50 = \mathbf{0}$ ← 動機 motivates smoothing</li>
+</ul>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 7: Smoothing 四方法 -->
+<details class="topic" id="t7">
+<summary><span class="topic-title">7. Smoothing 四方法（Add-1, Add-k, Good-Turing, Interpolated KN）</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y21">'21</span><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span><span class="year-tag y25">'25</span></span> <span class="tag tag-hot">🔥 每年</span></summary>
+<div class="topic-body">
+
+<div class="intuition">Smoothing 是「公平政策」：把一些機率分給沒看過的字組合，避免整句機率變 0。不同方法是分配公平度的不同設計。<strong>Interpolated KN 是必背的王者方法。</strong></div>
+
+<div class="t-quote">"There has never been a past exam without at least one exercise about smoothing."</div>
+
+<h4>定義</h4>
+<div class="formula"><strong>Smoothing:</strong> any technique that <strong>redistributes probability mass from observed n-grams to unobserved ones</strong>, ensuring no n-gram receives zero probability.</div>
+
+<h4>① Add-1 (Laplace) — 最簡單也最常考</h4>
+<div class="formula">$P_{\text{Add-1}}(w_k \mid w_{k-1}) = \dfrac{c(w_{k-1}, w_k) + 1}{c(w_{k-1}) + |V|}$</div>
+
+<p><strong>主要問題：</strong>$|V|$ 在 NLP 通常 $10^4$–$10^6$，分母被 $|V|$ 主導 → 觀察到的 bigram 機率被大幅稀釋（<strong>over-smoothing</strong>）。</p>
+
+<h4>② Add-k — 廣義版</h4>
+<div class="formula">$P_{\text{Add-}k}(w_k \mid w_{k-1}) = \dfrac{c(w_{k-1}, w_k) + k}{c(w_{k-1}) + k|V|}$, $k \in (0, 1]$</div>
+
+<h4>③ Good-Turing — 用稀有事件估 unseen</h4>
+<div class="formula">$r^* = (r+1) \dfrac{N_{r+1}}{N_r}$ &nbsp; where $N_r$ = number of n-grams seen $r$ times.<br>
+$P_{\text{GT}}(\text{unseen}) = N_1 / N$</div>
+
+<p><strong>直覺：</strong>如果 corpus 裡有很多事件只出現 1 次（$N_1$ 大），那 unseen 事件的真實機率應該不會是 0。</p>
+
+<h4>④ Interpolated Kneser-Ney — 滿分必背</h4>
+
+<div class="warning">
+<strong>背完整公式 + 三要素，全題 6 分穩拿：</strong>
+</div>
+
+<div class="formula"><strong>Full formula:</strong><br>
+$P_{\text{KN}}(w_i \mid w_{i-1}) = \dfrac{\max(c(w_{i-1}, w_i) - d, 0)}{c(w_{i-1})} + \lambda(w_{i-1}) \cdot P_{\text{cont}}(w_i)$</div>
+
+<table>
+<tr><th>要素</th><th>定義</th></tr>
+<tr><td><strong>① Discount $d$</strong></td><td>固定折扣常數（典型 0.75）— 從每個觀察到的 count 砍 $d$，騰出機率給 unseen</td></tr>
+<tr><td><strong>② Interpolation weight $\lambda(w_{i-1})$</strong></td><td>$\lambda(w_{i-1}) = \dfrac{d}{c(w_{i-1})} \cdot |\{w: c(w_{i-1}, w) > 0\}|$ — 騰出的機率質量總和</td></tr>
+<tr><td><strong>③ Continuation prob $P_{\text{cont}}(w)$</strong></td><td>$P_{\text{cont}}(w) = \dfrac{|\{w': c(w', w) > 0\}|}{|\{(w', w''): c(w', w'') > 0\}|}$ — w 當第二個字的 distinct bigram 比例</td></tr>
+</table>
+
+<details class="hot-topic">
+<summary>🌟 Francisco 直覺 — 必背</summary>
+<div class="hot-body">
+<p><i>Francisco</i> 出現頻率高，但 <strong>幾乎只跟在 San 後面</strong>。</p>
+<p>普通 back-off 用 unigram 頻率會錯誤地給 <i>Francisco</i> 在任何 context 下高機率。</p>
+<p><strong>KN 的 continuation probability</strong> 看「有多少不同的字 precede w」 — <i>Francisco</i> 拿到很低的分數，<strong>正確結果</strong>。</p>
+</div>
+</details>
+
+<details class="answer">
+<summary>📜 過去考題：'20 Q2(d-ii) — Add-k 計算 [4]</summary>
+<div>
+<p>|V|=7000, count(rainy)=50, count(rainy, grass)=0, k=0.1</p>
+<p>$P = \dfrac{0 + 0.1}{50 + 0.1 \cdot 7000} = \dfrac{0.1}{750} \approx \mathbf{1.33 \times 10^{-4}}$</p>
+</div>
+</details>
+
+<details class="answer">
+<summary>📜 過去考題：'23 Q2(d-ii) — Continuation Probability 三題</summary>
+<div>
+<p>給 6 句語料，要算 P_cont(library), P_cont(book), P_cont(the)</p>
+<p><strong>步驟：</strong>列出所有 distinct bigram types（21 個）；數每個目標字「有多少不同字 precede 它」</p>
+<ul>
+<li>library: preceded by {the, a, closest} → 3 → <strong>3/21 ≈ 0.143</strong></li>
+<li>book: preceded by {a} → 1 → <strong>1/21 ≈ 0.048</strong></li>
+<li>the: preceded by {in, to, is} → 3 → <strong>3/21 ≈ 0.143</strong></li>
+</ul>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 8: Perplexity + Evaluation -->
+<details class="topic" id="t8">
+<summary><span class="topic-title">8. Perplexity + Intrinsic/Extrinsic Evaluation</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y22">'22</span><span class="year-tag y24">'24</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">Perplexity 是「模型有多迷茫」— 對 test set 的 inverse geometric mean。<strong>低 = 好</strong>。等於 cross-entropy 取指數，可理解為 effective branching factor。</div>
+
+<h4>必背公式</h4>
+<div class="formula"><strong>Cross-entropy:</strong> $H(W) = -\dfrac{1}{N} \log_2 P(w_1, ..., w_N)$</div>
+
+<div class="formula"><strong>Perplexity:</strong> $PP(W) = P(w_1, ..., w_N)^{-1/N} = 2^{H(W)}$</div>
+
+<h4>關鍵特性（必背）</h4>
+<ol>
+<li><strong>Lower = better model</strong>（more confident，less perplex）</li>
+<li>單一值無意義 — <strong>perplexity is a comparison metric</strong>；同 test set 跨 model 比較才有意義</li>
+<li>等於 cross-entropy 的指數 — <strong>effective branching factor per token</strong></li>
+<li><strong>缺點：</strong>只能比較相同 vocabulary 的 models；OOV 處理敏感</li>
+</ol>
+
+<h4>Intrinsic vs Extrinsic Evaluation</h4>
+<table>
+<tr><th></th><th>Intrinsic</th><th>Extrinsic</th></tr>
+<tr><td>看什麼</td><td>模型本身性質</td><td>下游任務表現</td></tr>
+<tr><td>例</td><td><strong>perplexity</strong> (LM), 詞相似度 benchmark (embeddings)</td><td><strong>BLEU</strong> (MT), <strong>WER</strong> (ASR), F1 (NER)</td></tr>
+<tr><td>優點</td><td>cheap, fast, reproducible</td><td>反映實用性</td></tr>
+<tr><td>缺點</td><td>低 perplexity 不保證下游好用</td><td>expensive，會混入任務 noise</td></tr>
+</table>
+
+<details class="answer">
+<summary>📜 過去考題：'20 Q2(d-iii) — Perplexity 公式 + 解釋 [6]</summary>
+<div>
+<p><strong>滿分答：</strong></p>
+<p><strong>Formula:</strong> $PP(W) = P(w_1, ..., w_N)^{-1/N} = \sqrt[N]{1/\prod_{i=1}^N P(w_i|w_{i-1})}$ where N = total bigrams in test text.</p>
+<p><strong>How it evaluates:</strong></p>
+<ul>
+<li><strong>Lower perplexity = better model</strong> — higher sentence probability means LM is more confident (less perplexed).</li>
+<li>Perplexity is the <strong>exponential of cross-entropy</strong> — interpreted as <strong>effective branching factor per token</strong>.</li>
+<li><strong>Comparison-only:</strong> a single perplexity is meaningless; values comparable only on same test set with same vocabulary.</li>
+</ul>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- =========================================================
+     SECTION 5: CORE KNOWLEDGE — Q3 Embeddings + Classification
+     ========================================================= -->
+
+<h2 id="q3">📐 Q3 Embeddings + Classification — 核心知識</h2>
+
+<!-- TOPIC 9: One-hot vs Embeddings + Distributional -->
+<details class="topic" id="t9">
+<summary><span class="topic-title">9. One-hot vs Word Embeddings + Distributional Hypothesis</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">One-hot 是「<strong>每個字一張投票紙</strong>」（只勾自己那格）— 高維、無語意、所有 pair cosine=0。Word embedding 是「<strong>每個字的 GPS 座標</strong>」— 低維、有語意、相近的字座標相近。</div>
+
+<h4>對照表（必背）</h4>
+<table>
+<tr><th></th><th>One-hot</th><th>Word Embedding</th></tr>
+<tr><td>表示</td><td>長度 $|V|$ 的稀疏向量，單一 1</td><td>長度 $d \approx 100$–$1024$ 的 dense vector</td></tr>
+<tr><td>語意</td><td><strong>無</strong> — 所有 pair cosine = 0（互相 orthogonal）</td><td><strong>有</strong> — 語意相似的字向量幾何接近</td></tr>
+<tr><td>維度</td><td>$|V| \approx 10^4$–$10^6$（極大）</td><td>固定 $d \ll |V|$</td></tr>
+<tr><td>OOV</td><td>無法表示</td><td>FastText subword 可救</td></tr>
+<tr><td>distributed?</td><td>否</td><td>是（意義散佈於所有 dim）</td></tr>
+</table>
+
+<h4>Distributional Hypothesis（Firth, 1957）</h4>
+<div class="formula"><strong>Distributional hypothesis:</strong> words that occur in <strong>similar contexts</strong> have <strong>similar meanings</strong> — "you shall know a word by the company it keeps".</div>
+
+<h4>One-hot 兩大缺點（必背）</h4>
+<ol>
+<li><strong>Dimensionality + sparsity:</strong> 長度 $|V|$，downstream models 大且慢</li>
+<li><strong>No semantic information:</strong> 所有 pair orthogonal — 模型無法從 "cat" 泛化到 "dog"</li>
+</ol>
+
+<details class="answer">
+<summary>📜 過去考題：'20 Q3(b) / '25 Q3(b) — One-hot 表示 [4]</summary>
+<div>
+<p><strong>Q：</strong>"the man saw a cat." / "the cat caught a bird." No preprocessing.</p>
+<p><strong>Vocabulary（case-sensitive, period excluded）：</strong>{the, man, saw, a, cat, caught, bird} → <strong>|V| = 7</strong></p>
+<table>
+<tr><th>Word</th><th>One-hot vector</th></tr>
+<tr><td>the</td><td>[1, 0, 0, 0, 0, 0, 0]</td></tr>
+<tr><td>man</td><td>[0, 1, 0, 0, 0, 0, 0]</td></tr>
+<tr><td>saw</td><td>[0, 0, 1, 0, 0, 0, 0]</td></tr>
+<tr><td>a</td><td>[0, 0, 0, 1, 0, 0, 0]</td></tr>
+<tr><td>cat</td><td>[0, 0, 0, 0, 1, 0, 0]</td></tr>
+<tr><td>caught</td><td>[0, 0, 0, 0, 0, 1, 0]</td></tr>
+<tr><td>bird</td><td>[0, 0, 0, 0, 0, 0, 1]</td></tr>
+</table>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 10: Word2Vec + GloVe + Neg Sampling -->
+<details class="topic" id="t10">
+<summary><span class="topic-title">10. Word2Vec (CBOW/Skip-gram) + Negative Sampling + GloVe</span><span class="topic-meta"><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">兩大訓練詞向量的方法 — <strong>Word2Vec 邊看邊學</strong>（local），<strong>GloVe 看完全部統計再學</strong>（global）。Negative Sampling 是 Word2Vec 的加速秘訣。</div>
+
+<h4>CBOW vs Skip-gram</h4>
+<table>
+<tr><th></th><th>CBOW</th><th>Skip-gram</th></tr>
+<tr><td>輸入</td><td>周圍 context（平均）</td><td>中間 word</td></tr>
+<tr><td>輸出</td><td>中間 word</td><td>周圍 context（每個）</td></tr>
+<tr><td>速度</td><td>較快</td><td>較慢</td></tr>
+<tr><td>稀有字</td><td>較差</td><td><strong>較好</strong></td></tr>
+<tr><td>比喻</td><td>填空題</td><td>反向填空題</td></tr>
+</table>
+
+<h4>Negative Sampling (SGNS)</h4>
+<div class="formula"><strong>Negative Sampling</strong> replaces the full softmax with <strong>binary classification</strong>. For each true (centre, context) pair, sample $k$ <strong>negative pairs</strong> from the unigram distribution; train to discriminate true from negative.<br><br>
+<strong>Loss:</strong> $\log \sigma(v_c \cdot v_w) + \sum_{i=1}^{k} \log \sigma(-v_{w_i} \cdot v_c)$</div>
+
+<p><strong>為什麼用：</strong>full softmax 對 $|V| \approx 10^5$ 太慢，negative sampling 把 $O(|V|)$ 降到 $O(k)$（$k \approx 5\text{-}20$），品質類似。</p>
+
+<h4>GloVe vs Word2Vec</h4>
+<table>
+<tr><th></th><th>Word2Vec</th><th>GloVe</th></tr>
+<tr><td>訓練方式</td><td><strong>Local</strong> — 每個 (centre, context) pair 獨立優化</td><td><strong>Global</strong> — 在整體共現矩陣做矩陣分解</td></tr>
+<tr><td>目標函數</td><td>Skip-gram with negative sampling</td><td>$J = \sum_{i,j} f(X_{ij})(w_i^\top \tilde{w}_j + b_i + \tilde{b}_j - \log X_{ij})^2$</td></tr>
+<tr><td>強項</td><td>稀有字（subword + FastText）</td><td>常見字精確（捕捉全域統計）</td></tr>
+</table>
+
+<details class="answer">
+<summary>📜 過去考題：'24 Q3(c) — Negative Sampling 角色 [3]</summary>
+<div>
+<p><strong>滿分答：</strong></p>
+<p>Negative sampling reformulates Skip-gram training as <strong>binary classification</strong>: for each true (centre, context) pair, sample $k$ random "negative" pairs from the unigram distribution, and train the model to <strong>discriminate true pairs from negative ones</strong>.</p>
+<p><strong>Role:</strong></p>
+<ol>
+<li><strong>Efficiency:</strong> reduces per-step cost from $O(|V|)$ to $O(k)$, making training feasible on web-scale corpora.</li>
+<li><strong>Quality:</strong> produces high-quality embeddings comparable to full softmax in practice.</li>
+<li><strong>Implicit matrix factorisation:</strong> SGNS has been shown to implicitly factorise a shifted PMI matrix.</li>
+</ol>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 11: TF-IDF + PMI + Cosine -->
+<details class="topic" id="t11">
+<summary><span class="topic-title">11. TF-IDF + PMI / PPMI + Cosine Similarity</span><span class="topic-meta"><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span><span class="year-tag y25">'25</span></span> <span class="tag tag-warn">⚠️ 升溫</span></summary>
+<div class="topic-body">
+
+<div class="intuition">三個經典「字-字 / 字-文 關係分數」 — TF-IDF 是「特色詞」分數；PMI 看「兩個字真有緣還是巧合」；Cosine 看「兩個向量方向像不像」。<strong>近年趨勢：數值計算題越來越多。</strong></div>
+
+<h4>TF-IDF</h4>
+<div class="formula">$\text{tfidf}(t, d) = \text{tf}(t, d) \cdot \log \dfrac{N}{\text{df}(t)}$<br>
+$N$ = 總文件數，$\text{df}(t)$ = 含 t 的文件數</div>
+
+<p><strong>直覺：</strong>某文常見但別文少見 → 高分（特色詞）；到處都有的字（the, a）→ 低分。</p>
+
+<h4>PMI / PPMI</h4>
+<div class="formula"><strong>PMI:</strong> $\text{PMI}(x, y) = \log \dfrac{P(x, y)}{P(x) P(y)}$ — 同框機率 ÷ 獨立機率乘積<br>
+<strong>PPMI:</strong> $\text{PPMI}(x, y) = \max(\text{PMI}(x, y), 0)$ — 負值不可信，砍為 0</div>
+
+<h4>Cosine Similarity — 滿分必背</h4>
+<div class="formula">$\text{sim}(w_1, w_2) = \cos(\vec{w}_1, \vec{w}_2) = \dfrac{\vec{w}_1 \cdot \vec{w}_2}{\|\vec{w}_1\| \|\vec{w}_2\|}$<br>
+範圍 $[-1, 1]$；isolates direction from magnitude</div>
+
+<div class="warning">
+<strong>滿分守則：</strong>寫公式時務必加 <code>sim(w₁, w₂) = ...</code> 在左邊！老師原話：「沒寫 LHS 拿不到滿分。」
+</div>
+
+<details class="answer">
+<summary>📜 過去考題：'24 Q3(f) — Cosine king/queen/man [6]</summary>
+<div>
+<p><strong>給定：</strong>king=(46,0,32), queen=(39,0,59), man=(4,0,1)</p>
+<p><strong>Dot products：</strong></p>
+<ul>
+<li>king·man = 46·4 + 0 + 32·1 = <strong>216</strong></li>
+<li>queen·man = 39·4 + 0 + 59·1 = <strong>215</strong></li>
+</ul>
+<p><strong>Norms：</strong></p>
+<ul>
+<li>‖king‖ = √(2116+1024) = √3140 ≈ 56.04</li>
+<li>‖queen‖ = √(1521+3481) = √5002 ≈ 70.73</li>
+<li>‖man‖ = √17 ≈ 4.12</li>
+</ul>
+<p><strong>Cosine：</strong></p>
+<ul>
+<li>cos(king, man) = 216 / (56.04 · 4.12) ≈ <strong>0.935</strong></li>
+<li>cos(queen, man) = 215 / (70.73 · 4.12) ≈ <strong>0.738</strong></li>
+</ul>
+<p><strong>比較：</strong>dot products 幾乎相同（216 vs 215），但 cosine 顯示 king 比 queen 跟 man 更相似（0.935 vs 0.738）— 因為 cosine 隔離了 magnitude 影響。</p>
+</div>
+</details>
+
+<details class="answer">
+<summary>📜 過去考題：'25 Q3(e) — TF-IDF for "language" in 3 docs [7]</summary>
+<div>
+<p>D1: <i>The limits of my language mean the limits of my world.</i> → "language" 出現 1 次</p>
+<p>D2: <i>Expanding your vocabulary broadens your world.</i> → 0 次</p>
+<p>D3: <i>Language shapes our perception of reality.</i> → 1 次（case-folded）</p>
+<p><strong>Step 2 — IDF：</strong>$N = 3$，$\text{df}(\text{language}) = 2$，$\text{idf} = \log_{10}(3/2) \approx 0.176$</p>
+<p><strong>Step 3 — TF-IDF：</strong></p>
+<ul>
+<li>D1: $1 \times 0.176 = \mathbf{0.176}$</li>
+<li>D2: $0 \times 0.176 = \mathbf{0}$</li>
+<li>D3: $1 \times 0.176 = \mathbf{0.176}$</li>
+</ul>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 12: P/R/F1 + Macro/Micro + Overfitting -->
+<details class="topic" id="t12">
+<summary><span class="topic-title">12. Precision / Recall / F1 + Macro vs Micro + Overfitting</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y21">'21</span><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span></span> <span class="tag tag-hot">🔥 5/6 年</span></summary>
+<div class="topic-body">
+
+<div class="intuition">「<strong>P 多準 / R 多乾淨 / F1 兩姊妹和諧</strong>」。多類別場景再加 <strong>Macro</strong>（人人平等）vs <strong>Micro</strong>（多數派贏）。</div>
+
+<h4>Confusion Matrix（先建這個再算）</h4>
+<table>
+<tr><th></th><th>Actual Positive</th><th>Actual Negative</th></tr>
+<tr><th>Predicted Positive</th><td>TP</td><td>FP</td></tr>
+<tr><th>Predicted Negative</th><td>FN</td><td>TN</td></tr>
+</table>
+
+<h4>必背公式</h4>
+<div class="formula">
+$\text{Precision} = \dfrac{TP}{TP+FP}$ — 我說的有多準<br>
+$\text{Recall} = \dfrac{TP}{TP+FN}$ — 我抓得有多乾淨<br>
+$F_1 = \dfrac{2PR}{P+R}$ — 兩姊妹和諧（harmonic mean）<br>
+$\text{Accuracy} = \dfrac{TP+TN}{TP+FP+FN+TN}$
+</div>
+
+<h4>F1 為什麼是 harmonic mean？</h4>
+<p>$F_1 = 2/(1/P + 1/R)$。Harmonic mean <strong>punishes imbalance</strong> — 任一邊趨近 0，F1 也趨近 0。算術平均做不到這點。</p>
+
+<h4>Macro vs Micro</h4>
+<table>
+<tr><th></th><th>Macro</th><th>Micro</th></tr>
+<tr><td>計算法</td><td>每類別算 P/R/F1，再 unweighted mean</td><td>把所有類別 TP/FP/FN 加總，算一次 F1</td></tr>
+<tr><td>對 imbalance</td><td><strong>緩解</strong>（每類等重）</td><td><strong>保留</strong>（大類主導）</td></tr>
+<tr><td>適用</td><td>關心稀有類別</td><td>關心整體 instance 級準確</td></tr>
+</table>
+
+<h4>Overfitting</h4>
+<div class="formula"><strong>Overfitting:</strong> the model <strong>fits the training data (including noise) too closely</strong>, causing performance on unseen data to deteriorate. Symptom: <strong>growing gap between training and validation error</strong>.</div>
+
+<p><strong>Mitigations：</strong>regularisation (L1/L2), dropout, early stopping, more data / data augmentation, simpler model.</p>
+
+<details class="answer">
+<summary>📜 過去考題：'24 Q3(a) — Macro/Micro F1 計算 [8]</summary>
+<div>
+<p><strong>Confusion matrix data：</strong></p>
+<p>A: TP=80, FP=10+10=20, FN=15+5=20<br>
+B: TP=45, FP=15+40=55, FN=10+20=30<br>
+C: TP=125, FP=5+20=25, FN=10+40=50</p>
+<p><strong>Per-class F1：</strong></p>
+<ul>
+<li>A: P=80/100=0.80, R=80/100=0.80, F1=<strong>0.80</strong></li>
+<li>B: P=45/100=0.45, R=45/75=0.60, F1=<strong>0.514</strong></li>
+<li>C: P=125/150=0.833, R=125/175=0.714, F1=<strong>0.769</strong></li>
+</ul>
+<p><strong>Macro-F1</strong> = (0.80 + 0.514 + 0.769)/3 ≈ <strong>0.694</strong></p>
+<p><strong>Micro：</strong>ΣTP=250, ΣFP=100, ΣFN=100<br>
+Micro-P = Micro-R = 250/350 ≈ 0.714<br>
+<strong>Micro-F1 ≈ 0.714</strong></p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 13: BERT + Static vs Contextualised -->
+<details class="topic" id="t13">
+<summary><span class="topic-title">13. BERT MLM + Static vs Contextualised Embeddings</span><span class="topic-meta"><span class="year-tag y23">'23</span><span class="year-tag y25">'25</span></span> <span class="tag tag-warn">⚠️ 升溫</span></summary>
+<div class="topic-body">
+
+<div class="intuition">Static embedding（Word2Vec）一個字一向量 — 無法處理多義（bank 在「銀行」跟「河岸」同向量，壞）。Contextualised embedding（BERT）每次出現都不同向量 — 解決多義。<strong>BERT 怎麼訓練？克漏字（MLM）。</strong></div>
+
+<h4>Static vs Contextualised</h4>
+<table>
+<tr><th></th><th>Static (Word2Vec, GloVe)</th><th>Contextualised (BERT, ELMo)</th></tr>
+<tr><td>每字向量</td><td>固定一個</td><td>隨上下文變</td></tr>
+<tr><td>多義詞</td><td>單向量混合所有 sense</td><td>每次出現都不同向量</td></tr>
+<tr><td>"bank" 例</td><td>"river bank" / "financial bank" 同向量 ❌</td><td>兩個 context 各得不同向量 ✅</td></tr>
+<tr><td>訓練</td><td>淺層 NN，local context window</td><td>深層 Transformer，full sentence context</td></tr>
+</table>
+
+<h4>BERT MLM 滿分定義</h4>
+<div class="formula"><strong>Masked Language Modeling (MLM):</strong> during pre-training, BERT randomly selects <strong>15% of input tokens</strong>; the model must predict the <strong>original token</strong> at each selected position. Masking strategy: <strong>80% [MASK], 10% random token, 10% unchanged</strong>.</div>
+
+<h4>為什麼這個 80/10/10 設計？</h4>
+<ol>
+<li><strong>Bidirectionality：</strong>不像 causal LM（GPT 只看左邊），MLM 強制模型用<strong>雙向 context</strong></li>
+<li><strong>Pre-train/fine-tune mismatch：</strong>[MASK] 只在 pre-training 出現；fine-tuning 沒有。10% 隨機字 + 10% 不變強迫模型對<strong>每個位置</strong>都計算有用 representation，不只 [MASK] 位置</li>
+<li><strong>Prevent trivial copying：</strong>10% 隨機替換避免模型只是「複製輸入」</li>
+</ol>
+
+<details class="answer">
+<summary>📜 過去考題：'25 Q3(d) — BERT MLM 訓練機制 + masking strategy [4]</summary>
+<div>
+<p><strong>滿分答（直接背這段）：</strong></p>
+<p>BERT's MLM pre-training objective randomly selects <strong>15% of input tokens</strong> for prediction. The model must predict the original token at each selected position.</p>
+<p><strong>Masking strategy:</strong></p>
+<ul>
+<li><strong>80%</strong>: replace with the special <code>[MASK]</code> token</li>
+<li><strong>10%</strong>: replace with a random vocabulary token</li>
+<li><strong>10%</strong>: leave the token unchanged</li>
+</ul>
+<p><strong>Why this design:</strong></p>
+<ol>
+<li>Forces bidirectional context use (vs causal LM which only sees left context).</li>
+<li>Mitigates pre-train / fine-tune mismatch: <code>[MASK]</code> never appears during fine-tuning, so the model must learn useful representations at every position.</li>
+<li>Random replacement prevents trivial copying.</li>
+</ol>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- =========================================================
+     SECTION 6: CORE KNOWLEDGE — Q4 Sequence + Parsing
+     ========================================================= -->
+
+<h2 id="q4">📐 Q4 Sequence + Parsing — 核心知識</h2>
+
+<!-- TOPIC 14: Markov Chain + HMM + Viterbi -->
+<details class="topic" id="t14">
+<summary><span class="topic-title">14. Markov Chain + HMM + Viterbi</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y21">'21</span><span class="year-tag y23">'23</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">Markov chain 是「<strong>失憶跳棋</strong>」— 下一步只看現在。HMM 是「<strong>雙層蛋糕</strong>」— 上層隱藏狀態（天氣），下層觀察值（冰淇淋銷量），你只看銷量猜天氣。Viterbi 是 DP 偵探，找最可能的隱藏路徑。</div>
+
+<h4>Markov Chain（必背 3-tuple）</h4>
+<div class="formula"><strong>Markov chain</strong> = $(Q, A, \pi)$：
+<ul>
+<li>$Q$ — set of <strong>states</strong></li>
+<li>$A$ — <strong>transition matrix</strong>, $a_{ij} = P(q_j \mid q_i)$, rows sum to 1</li>
+<li>$\pi$ — <strong>initial distribution</strong>, $\pi_i = P(\text{state}_1 = q_i)$</li>
+</ul>
+<strong>Markov property:</strong> $P(\text{state}_t \mid \text{state}_{1..t-1}) = P(\text{state}_t \mid \text{state}_{t-1})$
+</div>
+
+<h4>HMM（必背 4-tuple）</h4>
+<div class="formula"><strong>HMM</strong> = $(Q, A, B, \pi)$ — Markov chain over <strong>hidden states</strong> plus <strong>emission matrix</strong> $B$：
+<ul>
+<li>$Q$ 是 hidden（POS tags）</li>
+<li>Observations are visible（words）</li>
+<li>$b_i(o) = P(o \mid q_i)$ — emission probability</li>
+</ul>
+</div>
+
+<div class="formula"><strong>HMM joint probability:</strong> $P(w_1, ..., w_n, t_1, ..., t_n) = \prod_{i=1}^{n} P(w_i \mid t_i) \cdot P(t_i \mid t_{i-1})$<br>
+（with $t_0 = \langle s\rangle$）</div>
+
+<h4>HMM 為什麼適合 POS tagging？（必背 4 點）</h4>
+<ol>
+<li><strong>Sequence labelling problem</strong>: HMM models 正是 (words, tags) joint distribution</li>
+<li><strong>Local dependencies on tags</strong>: DT 常後接 NN, MD 後接 VB — first-order Markov 捕捉這個</li>
+<li><strong>Words predicted by tag</strong>: emission $P(w \mid t)$ 捕捉「the 通常是 DT」這種詞彙偏好</li>
+<li><strong>Efficient decoding via Viterbi</strong>: $O(N^2 T)$，real-time tagging 可行</li>
+</ol>
+
+<h4>Viterbi Algorithm</h4>
+<div class="formula"><strong>Viterbi:</strong> dynamic programming for the <strong>most probable hidden state sequence</strong> in $O(N^2 T)$ time.<br>
+$v_t(j) = \max_i [v_{t-1}(i) \cdot a_{ij}] \cdot b_j(o_t)$<br>
+保存 back-pointers 還原最佳路徑。</div>
+
+<div class="t-quote">"You don't need to be able to use Viterbi step-by-step on the exam. But you need to indicate <strong>when</strong> it is appropriate."</div>
+
+<p><strong>適用場合：</strong>任何 sequence labelling — POS tagging, NER, ASR, gene finding。</p>
+
+<details class="answer">
+<summary>📜 過去考題：'21 Q4(b) — Ice-cream HMM Viterbi for [2,2,1] [9]</summary>
+<div>
+<p>States: H, C. π=[0.8, 0.2]. P(H|H)=0.7, P(C|H)=0.3, P(H|C)=0.4, P(C|C)=0.6. P(2|H)=0.4, P(2|C)=0.4, P(1|H)=0.2, P(1|C)=0.5.</p>
+<p><strong>t=1, obs=2:</strong> v₁(H) = 0.8·0.4 = 0.32; v₁(C) = 0.2·0.4 = 0.08</p>
+<p><strong>t=2, obs=2:</strong> v₂(H) = max(0.32·0.7, 0.08·0.4)·0.4 = 0.0896 (from H); v₂(C) = max(0.32·0.3, 0.08·0.6)·0.4 = 0.0384 (from H)</p>
+<p><strong>t=3, obs=1:</strong> v₃(H) = max(0.0896·0.7, 0.0384·0.4)·0.2 = 0.01254 (from H); v₃(C) = max(0.0896·0.3, 0.0384·0.6)·0.5 = 0.01344 (from H)</p>
+<p><strong>v₃(C) = 0.01344 &gt; v₃(H) = 0.01254</strong>，回溯：C ← H ← H</p>
+<p><strong>最可能序列：H, H, C</strong></p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 15: HMM/MEMM/CRF + Label Bias -->
+<details class="topic" id="t15">
+<summary><span class="topic-title">15. HMM → MEMM → CRF + Label Bias Problem</span><span class="topic-meta"><span class="year-tag y20">'20</span><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span></span> <span class="tag tag-hot">🔥 5/6 年</span></summary>
+<div class="topic-body">
+
+<div class="intuition">三代權力交替。<strong>HMM</strong>（生成派，特徵貧弱）→ <strong>MEMM</strong>（判別派 + 任意特徵，但 label bias）→ <strong>CRF</strong>（global normalisation，解掉 label bias）。</div>
+
+<h4>三代對照</h4>
+<table>
+<tr><th></th><th>HMM</th><th>MEMM</th><th>CRF</th></tr>
+<tr><td>派系</td><td><strong>Generative</strong><br>models $P(W, T)$</td><td><strong>Discriminative</strong><br>$P(t_i \mid t_{i-1}, w_i)$</td><td><strong>Discriminative</strong><br>$P(T \mid W)$</td></tr>
+<tr><td>豐富特徵？</td><td>❌ 只有 word</td><td>✅ 任何特徵</td><td>✅ 任何特徵</td></tr>
+<tr><td>Normalisation</td><td>跨狀態 joint</td><td><strong>Local</strong> per state</td><td><strong>Global</strong> over sequence</td></tr>
+<tr><td>Label bias?</td><td>無（但功能受限）</td><td><strong>嚴重</strong></td><td><strong>解決!</strong></td></tr>
+</table>
+
+<h4>Label Bias Problem（必背）</h4>
+<div class="formula"><strong>Label bias:</strong> MEMM normalises probabilities <strong>locally per state per observation</strong> — states with <strong>fewer outgoing transitions</strong> are unfairly favoured. In the extreme (one outgoing arc), $P(B \mid A, \text{any obs}) = 1$ — <strong>the observation is ignored</strong>. Once on a wrong path, the model cannot recover.</div>
+
+<h4>CRF 如何解決？</h4>
+<div class="formula"><strong>CRF uses global normalisation:</strong><br>
+$P(T \mid W) = \dfrac{1}{Z(W)} \exp\!\big(\sum_t \sum_k \lambda_k f_k(t_{t-1}, t_t, W)\big)$<br>
+where $Z(W) = \sum_{T'} \exp(\ldots)$ sums over <strong>all possible label sequences</strong>.<br><br>
+每個 local 決定要跟「全條 path space」競爭 — 出度多寡不再影響 — <strong>label bias eliminated</strong>.</div>
+
+<details class="answer">
+<summary>📜 過去考題：'20 Q4(b) — Label bias + CRF 如何解決 [4]</summary>
+<div>
+<p><strong>滿分答（直接背這兩段）：</strong></p>
+<p><strong>Label bias problem:</strong> MEMM normalises probabilities locally per state per observation — at each step, outgoing probabilities from a given state must sum to 1. This causes <strong>states with fewer outgoing transitions to be unfairly preferred</strong>: in the extreme case of one outgoing transition, that transition gets probability 1 regardless of the observation, so the observation is effectively ignored. Example: distinguishing "rib" from "rob" — if branched incorrectly at first letter, every subsequent step is locally normalised and cannot redistribute mass to the correct branch.</p>
+<p><strong>CRF solution:</strong> replaces local normalisation with global normalisation. The partition function $Z(W)$ sums over all possible label sequences, so each local decision is in competition with the entire global path space; observations can re-weight mass across the whole sequence. Label bias is eliminated.</p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 16: CFG + PCFG + Lexicalised -->
+<details class="topic" id="t16">
+<summary><span class="topic-title">16. CFG + PCFG + Lexicalised PCFG</span><span class="topic-meta"><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">CFG 是「<strong>句子製造規則手冊</strong>」。PCFG 加上機率 — 多個 parse 時挑機率最高的。Lexicalised PCFG 帶上 head word — 解 PP 接哪裡的歧義。</div>
+
+<h4>CFG 定義（4-tuple，必背）</h4>
+<div class="formula"><strong>CFG</strong> = $(N, \Sigma, R, S)$:
+<ul>
+<li>$N$ — <strong>non-terminals</strong>（S, NP, VP, ...）</li>
+<li>$\Sigma$ — <strong>terminals</strong>（words）</li>
+<li>$R$ — <strong>production rules</strong> of form $A \to \beta$</li>
+<li>$S \in N$ — <strong>start symbol</strong></li>
+</ul>
+"Context-free": $A$ 的展開不依賴周圍 context</div>
+
+<h4>PCFG</h4>
+<div class="formula"><strong>PCFG</strong>: CFG with rule probabilities, $\sum_\beta P(\beta \mid A) = 1$.<br>
+<strong>Tree probability</strong> = product of rule probabilities used: $P(\tau) = \prod_{(A \to \beta) \in \tau} P(\beta \mid A)$.</div>
+
+<h4>Lexicalised PCFG（解 PP 歧義）</h4>
+<div class="formula"><strong>Lexicalised PCFG</strong>: each non-terminal annotated with its <strong>head word</strong>; rule probabilities depend on head words. Resolves <strong>attachment ambiguity</strong> using <strong>lexical evidence</strong>.</div>
+
+<details class="hot-topic">
+<summary>🌟 經典 PP attachment 例：<i>"I shot an elephant in my pajamas"</i></summary>
+<div class="hot-body">
+<p>兩個 valid parses：</p>
+<ul>
+<li><strong>Parse 1（VP-attach）：</strong>I shot (an elephant) (in my pajamas) — 我穿著睡衣射的</li>
+<li><strong>Parse 2（NP-attach）：</strong>I shot (an elephant in my pajamas) — 大象穿著我的睡衣</li>
+</ul>
+<p>Plain PCFG 兩者機率相同。<strong>Lexicalised PCFG</strong> 從語料學到 "shoot ... in pajamas" 比 "elephant in pajamas" 常見，正確選 Parse 1。</p>
+</div>
+</details>
+
+<details class="answer">
+<summary>📜 過去考題：'24 Q4(d) — Lexicalisation 重要性 [4]</summary>
+<div>
+<p><strong>Lexicalisation</strong> means annotating each non-terminal with its <strong>head word</strong>. Rule probabilities are then estimated conditional on these head words.</p>
+<p><strong>Importance:</strong> plain PCFG rule probabilities are <strong>context-free in the lexical sense</strong> — they ignore which words actually fill the slots. But linguistic ambiguity is often <strong>resolved by specific words</strong>: <i>shoot</i> takes "in pajamas" as an instrument far more often than <i>elephant</i> does. Lexicalisation injects this evidence, dramatically improving accuracy on PP-attachment (from ~70% in plain PCFG to ~90%).</p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 17: CNF + CKY -->
+<details class="topic" id="t17">
+<summary><span class="topic-title">17. Chomsky Normal Form (CNF) + CKY Algorithm</span><span class="topic-meta"><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">CNF 是「<strong>規矩版 CFG</strong>」— 只允許兩種規則形式。CKY 是「<strong>由下往上拼樹</strong>」的 DP parser，但只接受 CNF。</div>
+
+<h4>CNF 定義</h4>
+<div class="formula"><strong>Chomsky Normal Form (CNF):</strong> 一種限制 CFG，每條 production rule 只能是：
+<ul>
+<li>$A \to B \, C$（兩個 non-terminals）</li>
+<li>$A \to w$（一個 terminal）</li>
+</ul>
+任何 CFG 都可機械式轉換成 CNF（透過 binarisation 與消除 unit/$\epsilon$ productions）。</div>
+
+<h4>CKY Algorithm</h4>
+<div class="formula"><strong>CKY:</strong> <strong>bottom-up dynamic programming parser</strong> for CFGs in <strong>Chomsky Normal Form</strong>. Time complexity $O(|R| \cdot n^3)$ for sentence length $n$.<br><br>
+<strong>Core recurrence:</strong> $C[i, j] = \{A : A \to BC \in R, \exists k \in [i, j): B \in C[i, k], C \in C[k+1, j]\}$<br>
+<strong>Base case:</strong> $C[i, i] = \{A : A \to w_i \in R\}$</div>
+
+<h4>步驟（手算 parse tree 必看）</h4>
+<ol>
+<li>填 diagonal：每個 word 對應的 POS 標籤</li>
+<li>填 2-word spans：兩個鄰居能否合併？（rule $A \to BC$ 是否存在）</li>
+<li>填 3-word spans, ... 直到整句</li>
+<li>檢查 $C[1, n]$ 是否包含 $S$</li>
+</ol>
+
+<details class="answer">
+<summary>📜 過去考題：'25 Q4(d) — Bottom-up parsing + grammar requirements [4]</summary>
+<div>
+<p><strong>CKY (Cocke-Kasami-Younger):</strong></p>
+<ol>
+<li>Fill 2D chart $C[i,j]$ indexed by sentence spans.</li>
+<li>Diagonal: for each $w_i$, add all $A$ such that $A \to w_i \in R$.</li>
+<li>Larger spans: for each split $k$, if $B \in C[i,k]$ and $C \in C[k+1,j]$ and $A \to BC \in R$, add $A$ to $C[i,j]$.</li>
+<li>Sentence in language iff $S \in C[1,n]$.</li>
+</ol>
+<p><strong>Grammar requirement:</strong> must be in <strong>Chomsky Normal Form (CNF)</strong> — only $A \to BC$ or $A \to w$. Any CFG can be converted. Time: $O(|R| n^3)$.</p>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- TOPIC 18: Constituency vs Dependency + POS/BIO -->
+<details class="topic" id="t18">
+<summary><span class="topic-title">18. Constituency vs Dependency Parsing + POS / BIO Tagging</span><span class="topic-meta"><span class="year-tag y22">'22</span><span class="year-tag y23">'23</span><span class="year-tag y24">'24</span><span class="year-tag y25">'25</span></span></summary>
+<div class="topic-body">
+
+<div class="intuition">兩種看句子結構的角度。<strong>Constituency</strong> 是「短語層的樹」（NP, VP, PP）；<strong>Dependency</strong> 是「字-字的箭頭關係」（nsubj, dobj）。POS tagging 給每個字貼詞性；BIO tagging 標 NER 實體邊界。</div>
+
+<h4>Constituency vs Dependency</h4>
+<table>
+<tr><th></th><th>Constituency</th><th>Dependency</th></tr>
+<tr><td>輸出</td><td>Tree with <strong>phrase-level internal nodes</strong>（NP, VP, PP）</td><td>Labelled <strong>head-dependent arcs</strong> between words</td></tr>
+<tr><td>結構</td><td>Hierarchical, recursive phrases</td><td>Flat, each word has one head</td></tr>
+<tr><td>強項</td><td>Phrase-structure languages（English）</td><td>Free word-order languages（Russian, Latin）；接近語意</td></tr>
+<tr><td>演算法</td><td>CKY, Earley, shift-reduce</td><td>Arc-eager, arc-standard, biaffine neural</td></tr>
+</table>
+
+<h4>POS Tagging</h4>
+<div class="formula"><strong>POS tagging</strong>: a <strong>sequence-labelling task</strong> that assigns each word in a sentence its <strong>grammatical category</strong> from a predefined tagset (e.g. <strong>Penn Treebank</strong>, ~45 tags).</div>
+
+<p><strong>常見 PTB 標籤陷阱：</strong></p>
+<ul>
+<li><b>book</b>: NN（noun, "read a book"）vs VB（verb, "book a flight"）</li>
+<li><b>Warwick</b>: NNP（proper noun）不是 NN</li>
+<li><b>fast</b>: 副詞用 RB（"runs fast"），不是 NN</li>
+<li><b>not</b>: RB（adverb）不是 UH（interjection）</li>
+<li><b>to</b> 在 "to be"：TO（infinitive marker），不是 VB</li>
+</ul>
+
+<h4>BIO Tagging</h4>
+<div class="formula"><strong>BIO scheme:</strong> sequence-labelling encoding using <strong>B</strong>eginning, <strong>I</strong>nside, <strong>O</strong>utside. Used for NER and chunking.</div>
+
+<p>範例：</p>
+<table>
+<tr><td>Barack</td><td>Obama</td><td>was</td><td>born</td><td>in</td><td>Hawaii</td><td>.</td></tr>
+<tr><td><strong>B-PER</strong></td><td><strong>I-PER</strong></td><td>O</td><td>O</td><td>O</td><td><strong>B-LOC</strong></td><td>O</td></tr>
+</table>
+
+<details class="answer">
+<summary>📜 過去考題：'25 Q4(e) — Penn Treebank 糾錯 [4]</summary>
+<div>
+<p>每句一個錯：</p>
+<ol>
+<li>"The/DT quick/JJ brown/JJ fox/NN jumps/VBZ over/IN the/DT lazy/VBZ dog/NN." → <strong>lazy/JJ</strong>（修飾 dog 的形容詞，不是 verb）</li>
+<li>"I/PRP have/VBP two/CD apple/NNS and/CC three/CD oranges/JJ." → <strong>oranges/NNS</strong>（複數名詞）</li>
+<li>"The/DT book/VB on/IN the/DT table/NN is/VBZ interesting/VBG." → <strong>book/NN</strong>（主詞名詞，The 不能接 VB）</li>
+<li>"To/VB or/CC not/UH to/TO be/VB - that/DT is/VBZ the/DT question/NN." → <strong>not/RB</strong>（副詞，不是 UH 感嘆詞）</li>
+</ol>
+</div>
+</details>
+
+</div>
+</details>
+
+<!-- =========================================================
+     SECTION 7: FORMULA CHEATSHEET
+     ========================================================= -->
+
+<h2 id="cheat">📋 公式 / 定義 速查表</h2>
+
+<div class="tip">考試前 10 分鐘掃這張，所有公式 + 滿分定義都在這裡。</div>
+
+<h3>Q1 必背公式</h3>
+<div class="formula"><strong>Maximum Matching:</strong> at each position, emit longest dictionary word, advance, repeat.</div>
+<div class="formula"><strong>Lemmatisation:</strong> word → lemma via lexicon（real word）<br>
+<strong>Stemming:</strong> word → stem via rule（may not be real word）</div>
+
+<h3>Q2 必背公式</h3>
+<div class="formula"><strong>Bigram MLE:</strong> $P(w_k | w_{k-1}) = c(w_{k-1}, w_k) / c(w_{k-1})$</div>
+<div class="formula"><strong>Add-1 (Laplace):</strong> $P = (c + 1) / (c(\cdot) + |V|)$</div>
+<div class="formula"><strong>Add-k:</strong> $P = (c + k) / (c(\cdot) + k|V|)$</div>
+<div class="formula"><strong>Good-Turing:</strong> $r^* = (r+1) N_{r+1}/N_r$；unseen prob = $N_1/N$</div>
+<div class="formula"><strong>Interpolated KN (必背 3 要素 + 完整公式):</strong><br>
+$P_{\text{KN}}(w_i \mid w_{i-1}) = \dfrac{\max(c(w_{i-1}, w_i) - d, 0)}{c(w_{i-1})} + \lambda(w_{i-1}) \cdot P_{\text{cont}}(w_i)$<br>
+① discount $d$（typically 0.75）<br>
+② $\lambda(w_{i-1}) = (d/c(w_{i-1})) \cdot |\{w: c(w_{i-1}, w) > 0\}|$<br>
+③ $P_{\text{cont}}(w) = |\{w': c(w', w) > 0\}| / |\{(w', w''): c(w', w'') > 0\}|$
+</div>
+<div class="formula"><strong>Perplexity:</strong> $PP(W) = P(w_1...w_N)^{-1/N} = 2^{H(W)}$，lower = better</div>
+
+<h3>Q3 必背公式</h3>
+<div class="formula"><strong>TF-IDF:</strong> $\text{tfidf}(t, d) = \text{tf}(t, d) \cdot \log(N / \text{df}(t))$</div>
+<div class="formula"><strong>PMI:</strong> $\log [P(x, y) / (P(x) P(y))]$ ; <strong>PPMI:</strong> $\max(\text{PMI}, 0)$</div>
+<div class="formula"><strong>Cosine（一定要加 LHS）:</strong> $\text{sim}(w_1, w_2) = (\vec{w}_1 \cdot \vec{w}_2) / (\|\vec{w}_1\| \cdot \|\vec{w}_2\|)$</div>
+<div class="formula"><strong>P / R / F1:</strong><br>
+$P = TP/(TP+FP)$ ; $R = TP/(TP+FN)$ ; $F_1 = 2PR/(P+R)$</div>
+<div class="formula"><strong>Macro-F1:</strong> 每類 F1 取 unweighted mean<br>
+<strong>Micro-F1:</strong> 全部 TP/FP/FN 加總再算一次</div>
+
+<h3>Q4 必背公式</h3>
+<div class="formula"><strong>HMM joint:</strong> $P(W, T) = \prod_i P(t_i | t_{i-1}) \cdot P(w_i | t_i)$</div>
+<div class="formula"><strong>Viterbi:</strong> $v_t(j) = \max_i [v_{t-1}(i) \cdot a_{ij}] \cdot b_j(o_t)$</div>
+<div class="formula"><strong>CRF:</strong> $P(T | W) = (1/Z(W)) \exp(\sum_t \sum_k \lambda_k f_k(...))$<br>
+where $Z(W) = \sum_{T'} \exp(...)$ over all label sequences</div>
+<div class="formula"><strong>PCFG tree prob:</strong> $P(\tau) = \prod_{(A \to \beta) \in \tau} P(\beta | A)$</div>
+<div class="formula"><strong>CKY recurrence:</strong> $C[i, j] = \{A : A \to BC \in R, \exists k: B \in C[i, k], C \in C[k+1, j]\}$</div>
+
+<h3>關鍵字 → 主題對應</h3>
+<table class="priority-table">
+<tr><th>看到關鍵字</th><th>立刻想到</th></tr>
+<tr><td>"distributional / context / meaning"</td><td><strong>Distributional Hypothesis / Word Embeddings</strong></td></tr>
+<tr><td>"sequence / Markov / LM"</td><td><strong>Language Model + N-gram + Smoothing</strong></td></tr>
+<tr><td>"unseen / zero probability"</td><td><strong>Smoothing</strong>（Laplace / Add-k / KN）</td></tr>
+<tr><td>"hidden / sequence labelling"</td><td><strong>HMM + Viterbi</strong></td></tr>
+<tr><td>"label bias / Francisco"</td><td><strong>一定是 KN 或 CRF</strong></td></tr>
+<tr><td>"parse tree / grammar"</td><td><strong>CFG / PCFG / CKY</strong></td></tr>
+<tr><td>"ambiguity / attach"</td><td><strong>Lexicalised PCFG</strong></td></tr>
+<tr><td>"bidirectional / mask"</td><td><strong>BERT MLM</strong></td></tr>
+</table>
+
+</div>
+
+<footer>
+CS918 NLP · 考試核心 textbook（part 1 of 2）<br>
+配套：<strong>CS918_exam_paper_2026.html</strong>（六年考古題 + 2026 預測卷完整解答）<br>
+祝你拿 first！加油 🍀
+</footer>
+
+</body>
+</html>
